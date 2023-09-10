@@ -1,6 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 import RegistrationForm from './components/registrationForm';
+import Login from './components/login';
 import {BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom'
 function App() {
 
@@ -20,7 +21,14 @@ function App() {
         } />
         <Route path='/register' element={<RegistrationForm onRegister={registerUser}/>} />
       </Routes>
+      <Routes>
+        <Route path='/' element={
+          <>
+          <Link to ='/login'><button>Login</button></Link></>
+        }/>
 
+        <Route path='/login' element={<Login onLogin={registerUser}/>}/>
+        </Routes> 
       
     </div>
     </Router>
