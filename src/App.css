@@ -28,6 +28,21 @@
   color: #61dafb;
 }
 
+.reg-form{
+  margin: auto;
+  width: 40%;
+  text-align: left;
+  /* border: solid;
+  padding: 2%; */
+}
+.form-error{
+  color:red;
+}
+.go-back{
+  position: relative;
+  left:68%;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

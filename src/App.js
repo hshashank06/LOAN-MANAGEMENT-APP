@@ -3,6 +3,9 @@ import './App.css';
 import RegistrationForm from './components/registrationForm';
 import Login from './components/login';
 import {BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom'
+import Button from 'react-bootstrap/Button'
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 function App() {
 
   const registerUser=(user)=>{
@@ -16,19 +19,12 @@ function App() {
       <Routes>
         <Route path='/' element={
           <>
-          <Link to='/register'><button>Register</button></Link>
+          <Login onLogin={registerUser}/>
+          <Link to='/register'><Button variant="secondary">Register</Button></Link>
           </>
         } />
         <Route path='/register' element={<RegistrationForm onRegister={registerUser}/>} />
-      </Routes>
-      <Routes>
-        <Route path='/' element={
-          <>
-          <Link to ='/login'><button>Login</button></Link></>
-        }/>
-
-        <Route path='/login' element={<Login onLogin={registerUser}/>}/>
-        </Routes> 
+      </Routes> 
       
     </div>
     </Router>

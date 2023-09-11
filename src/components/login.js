@@ -1,4 +1,6 @@
 import React from "react";
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 function Login(){
    
     return(
@@ -8,17 +10,17 @@ function Login(){
             alignItems:"center",
             justifyContent:"center",
             width: "100vw",
-            height: "100vh"
+            height: "50vh"
         }}>
-            <p className="title"> <h1>User Login</h1>
-           </p> 
-            <form>
-               <div> <label htmlFor="email" >Email </label><input type ="email"placeholder="Enter Email"/>
-               </div>
-               <div><label For="password">Password</label><input type ="password" placeholder="Enter Password"/></div> 
-                <input type ="submit"/>
+            <div className="title"> <h2>User Login</h2>
+           </div> 
+            <Form>
+               <Form.Group> <Form.Label htmlFor="email" >Email </Form.Label><Form.Control type ="email"placeholder="Enter Email"/>
+               </Form.Group>
+               <Form.Group><Form.Label htmlFor="password">Password</Form.Label><Form.Control type ="password" placeholder="Enter Password"/></Form.Group> 
+                <Button type ="submit">Submit</Button>
 
-            </form>
+            </Form>
             
         </div>
     );
