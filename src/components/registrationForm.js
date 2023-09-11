@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form'
 import {Link} from 'react-router-dom'
 const RegistrationForm = ({onRegister}) =>{
     const [firstName,setFirstName]=useState('')
+    const [dob,setdob] = useState('');
     const [lastName,setLastName]=useState('')
     const [email,setEmail]=useState('')
     const [age,setAge]=useState('')
@@ -16,23 +17,30 @@ const RegistrationForm = ({onRegister}) =>{
     const registerUser= async(user)=>{
         console.log(user)
         try{
-            const res= await fetch('/',{
+            const res= await fetch('http://localhost:8082/loanapp/register/user',{
                 method:'POST',
                 body:JSON.stringify(user),
                 headers:{
                     'Content-Type':'application/json'
                 }
             })
-            if(res.status===200){
-                console.log('Registration complete')
-                return
+           
+
+            const data = await res.text();
+            if(data === "NEW USER REGISTERED"){
+                alert("New User has been Registered")
+
             }
-            throw await res.json()
+            else if(data === "NEW USER COULLD NOT BE ADDED"){
+                alert("User could not be registered")
+            }
+
         }
         catch(e){
             // console.log(e)
             setRegistrationError(e)
             console.log(registrationError)
+            
         }
     }
 
@@ -46,7 +54,7 @@ const RegistrationForm = ({onRegister}) =>{
 
     useEffect(()=>{
         if(Object.keys(errorValues).length===0 && submit){  
-            registerUser({firstName,lastName,"userEmail":email,"userAge":age,userName,"userPassword":password})
+            registerUser({firstName,lastName,"userEmail":email,"userAge":age,"userdob":dob,"userPassword":password})
         }
     },[errorValues])
 
@@ -71,7 +79,7 @@ const RegistrationForm = ({onRegister}) =>{
         if(!val.password){
             errors.password='Password is required!'
         }
-        else if(val.password.length<4 || val.password.length>10){
+        else if(val.password.length<8 || val.password.length>16){
             errors.password='Password must have atleast 4 characters and atmost 10!'
         }
         if(!val.age){
@@ -112,6 +120,11 @@ const RegistrationForm = ({onRegister}) =>{
                 <Form.Control type="text" placeholder="Add Username" value={userName} onChange={(e)=>setUserName(e.target.value)}/>
                 <p className='form-error'>{errorValues.userName}</p>
             </Form.Group>
+            <Form.Group>
+                <Form.Label>Date Of Birth</Form.Label>
+                <Form.Control type="date" value={dob} onChange={(e)=>setdob(e.target.value)}/>
+            </Form.Group>
+            
             <Form.Group>
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" placeholder="Add Password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
