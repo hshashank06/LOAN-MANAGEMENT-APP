@@ -28,6 +28,7 @@ function App() {
         <Route path='/register' element={<RegistrationForm onRegister={registerUser}/>} />
         <Route path='/user-dashboard' element={<Userdashboard/>} />
         <Route path='/admin-dashboard' element={<AdminDashboard/>} />
+        <Route path='/customer' element={<CustomerManagement/>}/>
       </Routes> 
       
     </div>
