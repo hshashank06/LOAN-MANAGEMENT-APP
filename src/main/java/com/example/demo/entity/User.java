@@ -1,16 +1,17 @@
 package com.example.demo.entity;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -41,7 +42,7 @@ public class User {
 	@NotEmpty(message = "Email cannot be empty")
 	private String userEmail;
 	
-	@Column(name = "Age",nullable=false,columnDefinition="TEXT",unique=true)
+	@Column(name = "Age",nullable=false,columnDefinition="TEXT")
 	@Min(value = 18, message="User Age cannot be Less than 18 for Loan Account")
 	private Integer userAge;
 	
@@ -54,6 +55,9 @@ public class User {
 	@NotEmpty(message = "Password cannot be empty")
 	@Size(min = 8, max = 20)
 	private String userPassword;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Loan> loan;
 	
 //	@OneToOne(mappedBy = "user")
 //	private Account account;

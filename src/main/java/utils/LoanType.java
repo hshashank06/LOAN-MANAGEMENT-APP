@@ -1,0 +1,6 @@
+package utils;
+
+public enum LoanType {
+
+	CAR,FURNITURE,EDUCATION,HOME,MEDICAL,ACCIDENT,PROPERTY
+}

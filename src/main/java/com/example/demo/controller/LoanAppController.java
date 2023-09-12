@@ -1,9 +1,13 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +36,7 @@ public class LoanAppController {
 	ResponseEntity<String> validateUser(@RequestBody User user) {
 		System.out.println("I am here");
 		Boolean status = loanAppService.validateUserService(user.getUserId(), user.getUserPassword());
+	
 		if(status) {
 			System.out.println("Verified");
 			return ResponseEntity.status(HttpStatus.OK).body("VERIFIED");
@@ -40,6 +45,7 @@ public class LoanAppController {
 		else {
 			return ResponseEntity.badRequest().body("NOT VERIFIED");
 		}
+	
 	}
 	
 	@PostMapping("/register/user")
@@ -51,8 +57,22 @@ public class LoanAppController {
 			return ResponseEntity.status(HttpStatus.OK).body("NEW USER REGISTERED");
 		}
 		else {
-			return ResponseEntity.badRequest().body("NEW USER COULLD NOT BE ADDED");		}
+			
+			return ResponseEntity.badRequest().body("NEW USER COULLD NOT BE ADDED");
+			}
 		
 	}
+	
+	@GetMapping("/get/users")
+	@ResponseBody
+	ResponseEntity<List<User>>  getAllCustomerData(){
+		List<User> listOfUsers = loanAppService.getAllUsers();
+		return ResponseEntity.status(HttpStatus.OK).body(listOfUsers);
+		
+		
+	}
+	
+	
+
 	
 }
