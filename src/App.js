@@ -7,6 +7,7 @@ import Login from './components/login';
 import {BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Userdashboard from './components/User_dashboard';
 
 function App() {
 
@@ -25,8 +26,8 @@ function App() {
           </>
         } />
         <Route path='/register' element={<RegistrationForm onRegister={registerUser}/>} />
-        <Route path='/admin-dashboard' element={<AdminDashboard />} />
-        <Route path='/customer' element={<CustomerManagement />} />
+        <Route path='/user-dashboard' element={<Userdashboard/>} />
+        <Route path='/admin-dashboard' element={<AdminDashboard/>} />
       </Routes> 
       
     </div>

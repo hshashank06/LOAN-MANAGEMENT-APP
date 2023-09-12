@@ -29,6 +29,7 @@ function Login(){
             console.log(data)
             if(data === "VERIFIED"){
                 alert("LOGIN IS COMPLETE")
+                
             }
             else{
                 alert("LOGIN COULD NOT BE DONE")
