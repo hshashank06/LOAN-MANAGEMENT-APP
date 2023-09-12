@@ -8,7 +8,6 @@ const RegistrationForm = ({onRegister}) =>{
     const [lastName,setLastName]=useState('')
     const [email,setEmail]=useState('')
     const [age,setAge]=useState('')
-    const [userName,setUserName]=useState('')
     const [password,setPassword]=useState('')
     const [errorValues,setErrorValues]=useState({})
     const [submit,setSubmit]=useState(false)
@@ -47,7 +46,7 @@ const RegistrationForm = ({onRegister}) =>{
     const onSubmit=(e)=>{
         e.preventDefault()
         setErrorValues(checkValues({
-            firstName,lastName,email,age,userName,password
+            firstName,lastName,email,age,password
         }))
         setSubmit(true)
     }
@@ -73,14 +72,11 @@ const RegistrationForm = ({onRegister}) =>{
         else if(!regex.test(val.email)){
             errors.email='Enter valid email format!'
         }
-        if(!val.userName){
-            errors.userName='Username is required!'
-        }
         if(!val.password){
             errors.password='Password is required!'
         }
         else if(val.password.length<8 || val.password.length>16){
-            errors.password='Password must have atleast 4 characters and atmost 10!'
+            errors.password='Password must have atleast 8 characters and atmost 16!'
         }
         if(!val.age){
             errors.age='Age is required!'
@@ -114,11 +110,6 @@ const RegistrationForm = ({onRegister}) =>{
                 <Form.Label>Age</Form.Label>
                 <Form.Control type="number" placeholder="Add Age" value={age} onChange={(e)=>setAge(e.target.value)}/>
                 <p className='form-error'>{errorValues.age}</p>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Add Username" value={userName} onChange={(e)=>setUserName(e.target.value)}/>
-                <p className='form-error'>{errorValues.userName}</p>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Date Of Birth</Form.Label>

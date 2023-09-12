@@ -42,6 +42,16 @@
   position: relative;
   left:68%;
 }
+.admin-dashboard{
+  margin: 3%;
+}
+.dashboard-btn{
+  margin:1%;
+}
+#register-button{
+  float: right;
+  margin: 2%;
+}
 
 @keyframes App-logo-spin {
   from {
