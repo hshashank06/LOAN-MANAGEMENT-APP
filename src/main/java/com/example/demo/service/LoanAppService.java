@@ -1,34 +1,105 @@
 package com.example.demo.service;
 
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.User;
-import com.example.demo.repository.LoanRepo;
+import com.example.demo.repository.AdminRepo;
+import com.example.demo.repository.UserRepo;
+
+import jakarta.transaction.Transactional;
+import utils.Role;
 
 @Service
 public class LoanAppService {
 	
 	@Autowired
-	LoanRepo loanRepo;
+	UserRepo userRepo;
+	@Autowired
+	AdminRepo adminRepo;
 	
 	
-	public LoanAppService(LoanRepo loanRepo) {
-		this.loanRepo = loanRepo;
+	public LoanAppService(UserRepo userRepo,AdminRepo adminRepo) {
+		this.userRepo = userRepo;
+		this.adminRepo = adminRepo;
 	}
 	public Boolean validateUserService(Long userId,String password) {
-		boolean userExists = loanRepo.existsByUserIdAndUserPassword(userId, password);
-		return userExists;
+		
+		boolean userExists = userRepo.existsByUserIdAndUserPassword(userId, password);
+		if(userExists) return true;
+		else return false;
+		
 	}
 	
+	public Boolean validateAdminService(Long adminId, String password) {
+		boolean adminExists = adminRepo.existsByAdminIdAndAdminPassword(adminId, password);
+		if(adminExists) return true;
+		else return false;
+	}
 	public Boolean checkAddNewUser(User user) {
-		loanRepo.save(user);
-		if(loanRepo.existsByUserId(user.getUserId())) {
+		userRepo.save(user);
+		if(userRepo.existsByUserId(user.getUserId())) {
 			return true;
 
 	}else {
 			return false;
 		}
 	}
+	
+	public List<User> getAllUsers(){
+		List<User> users = userRepo.findAll();
+		return users;
+	}
+	
+	public Boolean deleteUserById(Long id) {
+		userRepo.deleteById(id);
+		if(!userRepo.existsById(id)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+		
+	@Transactional
+	public void updateFields(Long entityId,Map<String,Object> updates) {
+		
+			Optional<User> user = userRepo.findById(entityId);
+		
+			if(user != null) {
+				for(Map.Entry<String,Object> entry : updates.entrySet()) {
+					String fieldName = entry.getKey();
+					Object value = entry.getValue();
+					
+					
+					if(fieldName.equals("firstName")) {
+						user.get().setFirstName((String) value);
+						
+					}
+					
+					else if(fieldName.equals("lastName")) {
+						user.get().setLastName((String) value);
+					}
+					else if(fieldName.equals("userAge")) {
+						user.get().setUserAge((Integer) value);
+					}
+					else if(fieldName.equals("userEmail")) {
+						user.get().setUserEmail((String) value);
+					}
+					else if(fieldName.equals("userdob")) {
+						user.get().setUserdob((LocalDate) value);
+					}
+					
+				}
+				
+			}
+	}
+
+	
 }
