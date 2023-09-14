@@ -9,15 +9,15 @@ function Userdashboard()
     return(
         <>
         <div style={{
-            display:"flex",
-            flexDirection: "column",
+           
+           
             alignItems:"center",
             justifyContent:"center",
-            width: "100vw",
-            height: "50vh"
+            width: "50w",
+            height: "50h"
         }}>
             <h1>User Dashboard</h1>
-           <Link to='/view-loan'> <Button variant="primary" size="lg">View Loan</Button> </Link>
+           <div style={{margin : "50px"}} >  </div><Link to='/view-loan'> <Button variant="primary" size="lg">View Loan</Button> </Link>
            <Link to='/apply-loan'> <Button variant="primary" size="lg" > Apply For Loan</Button> </Link>
             <Link to= '/'> <Button variant="primary" size="lg">
                 View Items Purchased
