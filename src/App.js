@@ -8,6 +8,8 @@ import {BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Userdashboard from './components/User_dashboard';
+import Viewloan from './components/View_loan';
+import LoanApplyForm from './components/LoanApplyForm';
 
 function App() {
 
@@ -29,6 +31,8 @@ function App() {
         <Route path='/user-dashboard' element={<Userdashboard/>} />
         <Route path='/admin-dashboard' element={<AdminDashboard/>} />
         <Route path='/customer' element={<CustomerManagement/>}/>
+       <Route path='/view-loan' element={<Viewloan/>}/>
+      < Route path='/apply-loan' element={<LoanApplyForm/>}/>
       </Routes> 
       
     </div>

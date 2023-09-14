@@ -1,7 +1,11 @@
 import React from "react";
 import Button from 'react-bootstrap/Button'
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 function Userdashboard()
 {
+    const navigate= useNavigate();
     return(
         <>
         <div style={{
@@ -13,13 +17,11 @@ function Userdashboard()
             height: "50vh"
         }}>
             <h1>User Dashboard</h1>
-           <p>  <Button variant="primary" size="lg">View Loan</Button> </p>
-           <p> <Button variant="primary" size="lg">
-                Apply For Loan
-            </Button> </p>
-           <p> <Button variant="primary" size="lg">
+           <Link to='/view-loan'> <Button variant="primary" size="lg">View Loan</Button> </Link>
+           <Link to='/apply-loan'> <Button variant="primary" size="lg" > Apply For Loan</Button> </Link>
+            <Link to= '/'> <Button variant="primary" size="lg">
                 View Items Purchased
-            </Button> </p>
+            </Button> </Link>
         </div>
         </>
     );
