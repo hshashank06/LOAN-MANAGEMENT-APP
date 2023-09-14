@@ -52,6 +52,13 @@
   float: right;
   margin: 2%;
 }
+.nav-bar{
+  background-color:#d71e28;
+  border-bottom: 4px solid #ffcd41;
+}
+.nav-bar-brand{
+  font-weight: bold;
+}
 
 @keyframes App-logo-spin {
   from {

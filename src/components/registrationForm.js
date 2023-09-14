@@ -122,7 +122,7 @@ const RegistrationForm = ({onRegister}) =>{
                 <p className='form-error'>{errorValues.password}</p>
             </Form.Group>
             <Button type="submit" >Register</Button>
-            <Link to='/'><Button variant="secondary" className="go-back">Go Back</Button></Link>
+            <Link to='/admin-dashboard'><Button variant="secondary" className="go-back">DashBoard</Button></Link>
 
         </Form>
     )

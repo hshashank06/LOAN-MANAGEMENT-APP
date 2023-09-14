@@ -3,6 +3,7 @@ import './App.css';
 import RegistrationForm from './components/registrationForm';
 import AdminDashboard from './components/adminDashboard';
 import CustomerManagement from './components/customerManagement';
+import LoanManagement from './components/loanManagement';
 import Login from './components/login';
 import {BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
@@ -10,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Userdashboard from './components/User_dashboard';
 import Viewloan from './components/View_loan';
 import LoanApplyForm from './components/LoanApplyForm';
+import LoanNavBar from './components/navBar';
 
 function App() {
 
@@ -20,7 +22,8 @@ function App() {
   return (
     <Router>
       <div className="App">
-      <h1>LOAN APP</h1>
+      <LoanNavBar/>
+      
       <Routes>
         <Route path='/' element={
           <>
@@ -33,6 +36,7 @@ function App() {
         <Route path='/customer' element={<CustomerManagement/>}/>
        <Route path='/view-loan' element={<Viewloan/>}/>
       < Route path='/apply-loan' element={<LoanApplyForm/>}/>
+        <Route path='/loan-management' element={<LoanManagement/>}/>
       </Routes> 
       
     </div>

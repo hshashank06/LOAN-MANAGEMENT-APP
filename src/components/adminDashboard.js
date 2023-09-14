@@ -6,7 +6,7 @@ const AdminDashboard=()=>{
             <h2>Admin Dashboard</h2>
             <div>
                 <Link to="/customer"><Button className='dashboard-btn'>Customer Data Management</Button></Link>
-                <Link to="/"><Button className='dashboard-btn'>Loan Card Management</Button></Link>
+                <Link to="/loan-management"><Button className='dashboard-btn'>Loan Card Management</Button></Link>
                 <Link to="/"><Button className='dashboard-btn'>Items Master Data</Button></Link>
             </div>
             

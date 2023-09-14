@@ -1,39 +1,14 @@
 import {Link} from 'react-router-dom'
 import  Button  from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import RegistrationForm from './registrationForm'
-const CustomerManagement=()=>{
-    const [register,setRegister]=useState(false)
-    const [response,setResponse] = useState([])
+const LoanManagement=()=>{
+    const [addLoan,setLoan]=useState(false)
     const handleClick=()=>{
-        setRegister(!register)
-        console.log(register)
+        setLoan(!addLoan)
+        console.log(addLoan)
     }
-
-
-    useEffect(()=>{
-        
-    const displayData=async()=>{
-        try{
-            const url="http://localhost:8082/loanapp/get/users"
-            let options={
-                method:'GET'
-            }
-            const res=await fetch(url,options)
-            const data=await res.json()
-            setResponse(data)
-            console.log(data)
-        }
-        catch(e){
-            console.log(e)
-        }
-        
-    }
-    displayData()
-       
-        
-    },[])
     const dummyData=[
         {
             "userId":1,
@@ -59,11 +34,11 @@ const CustomerManagement=()=>{
     ]
     return(
         <div>
-            <Button variant="secondary" id="register-button" onClick={handleClick}>{register?'Show All Users': 'Register User'}</Button>
+            <Button variant="secondary" id="register-button" onClick={handleClick}>{addLoan?'Show All Loans': 'Apply Loans'}</Button>
             <>
-            {register && <RegistrationForm onRegister={()=>{}}/>}
+            {addLoan && <RegistrationForm onRegister={()=>{}}/>}
             </>
-            {!register && <Table striped bordered hover>
+            {!addLoan && <Table striped bordered hover>
             <thead>
                 <tr>
                 <th>#</th>
@@ -76,14 +51,14 @@ const CustomerManagement=()=>{
             </thead>
             <tbody>
                 {
-                    response && response.map((user)=>(
+                    dummyData && dummyData.map((user)=>(
                         <tr key={user.userId}>
-                            <td>{response.indexOf(user)+1}</td>
+                            <td>{dummyData.indexOf(user)+1}</td>
                             <td>{user.userId}</td>
                             <td>{user.firstName}</td>
                             <td>{user.lastName}</td>
-                            <td>{user.userAge}</td>
-                            <td>{user.userEmail}</td>
+                            <td>{user.age}</td>
+                            <td>{user.emailId}</td>
                             <td><Button variant="link">Edit</Button></td>
                             <td><Button variant="link">Delete</Button></td>
                         </tr>
@@ -95,4 +70,4 @@ const CustomerManagement=()=>{
     )
 }
 
-export default CustomerManagement
+export default LoanManagement
