@@ -63,15 +63,12 @@ public class LoanAppController {
 		
 	}
 	
-	@GetMapping("/get/users")
+
+	@GetMapping("/loans")
 	@ResponseBody
-	ResponseEntity<List<User>>  getAllCustomerData(){
-		List<User> listOfUsers = loanAppService.getAllUsers();
-		return ResponseEntity.status(HttpStatus.OK).body(listOfUsers);
-		
+	ResponseEntity<List<Loan>> getAllLoans(){
 		
 	}
-	
 	
 
 	

@@ -31,4 +31,7 @@ public class LoanAppService {
 			return false;
 		}
 	}
+	public List<Loan> listOfloans(){
+		loanRepo.
+	}
 }
