@@ -8,6 +8,7 @@ function Login(){
 
     const [userId,setUserId] = useState();
     const [userPassword,setUserPassword] = useState();
+    const [isAdmin,setAdmin]=useState(false)
     const navigate=useNavigate()
 
     const loginUser= async (e)=>{
@@ -15,13 +16,26 @@ function Login(){
         const user = 
         {userId:userId,
         userPassword:userPassword};
-
+        const admin={
+            adminId:userId,
+            adminPassword:userPassword
+        }
         console.log(user)
         try{
-            const res= await fetch('http://localhost:8082/loanapp/validate/user',{
+            let adminLogin=false
+            let payload=user
+            if(isAdmin){
+                adminLogin=true
+                payload=admin
+            }
+            let url='http://localhost:8082/loanapp/validate/user'
+            if(adminLogin){
+                url='http://localhost:8082/loanapp/validate/admin'
+            }
+            const res= await fetch(url,{
                 method:'POST',
                 mode:'cors',
-                body:JSON.stringify(user),
+                body:JSON.stringify(payload),
                 headers:{
                     'Content-Type':'application/json'
                 }
@@ -32,7 +46,10 @@ function Login(){
             console.log(data)
             if(data === "TRUE"){
                 // alert("LOGIN IS COMPLETE")
+                if(!adminLogin)
                 navigate('/user-dashboard')
+                else
+                navigate('/admin-dashboard')
             }
             else{
                 alert("LOGIN COULD NOT BE DONE")
@@ -59,7 +76,8 @@ function Login(){
             <Form>
                <Form.Group> <Form.Label >User ID </Form.Label><Form.Control type ="text" value = {userId} placeholder="Enter User Id"  onChange={(e)=>setUserId(e.target.value)}/>
                </Form.Group>
-               <Form.Group><Form.Label htmlFor="password">Password</Form.Label><Form.Control type ="password" value = {userPassword} placeholder="Enter Password"  onChange={(e)=>setUserPassword(e.target.value)}/></Form.Group> 
+               <Form.Group><Form.Label htmlFor="password">Password</Form.Label><Form.Control type ="password" value = {userPassword} placeholder="Enter Password"  onChange={(e)=>setUserPassword(e.target.value)}/></Form.Group>
+               <Form.Group><Form.Label >Are you an Admin</Form.Label><input type ="checkbox" checked ={isAdmin}   onChange={()=>setAdmin(!isAdmin)}/></Form.Group>  
                 <Button type ="submit" onClick = {loginUser}>Submit</Button>
 
             </Form>
