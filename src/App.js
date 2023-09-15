@@ -12,6 +12,7 @@ import Userdashboard from './components/User_dashboard';
 import Viewloan from './components/View_loan';
 import LoanApplyForm from './components/LoanApplyForm';
 import LoanNavBar from './components/navBar';
+import EditUser from './components/editUser';
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
        <Route path='/view-loan' element={<Viewloan/>}/>
       < Route path='/apply-loan' element={<LoanApplyForm/>}/>
         <Route path='/loan-management' element={<LoanManagement/>}/>
+        <Route path='/edit-user' element={<EditUser/>}/>
       </Routes> 
       
     </div>

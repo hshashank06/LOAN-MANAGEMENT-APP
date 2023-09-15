@@ -28,7 +28,7 @@ const RegistrationForm = ({onRegister}) =>{
             const data = await res.text();
             if(data === "NEW USER REGISTERED"){
                 alert("New User has been Registered")
-
+                await onRegister()
             }
             else if(data === "NEW USER COULLD NOT BE ADDED"){
                 alert("User could not be registered")

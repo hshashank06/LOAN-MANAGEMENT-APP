@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom'
+import {Link , useNavigate} from 'react-router-dom'
 import  Button  from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import {useState, useEffect} from 'react'
@@ -6,14 +6,13 @@ import RegistrationForm from './registrationForm'
 const CustomerManagement=()=>{
     const [register,setRegister]=useState(false)
     const [response,setResponse] = useState([])
+    const navigate=useNavigate()
+
     const handleClick=()=>{
         setRegister(!register)
         console.log(register)
     }
 
-
-    useEffect(()=>{
-        
     const displayData=async()=>{
         try{
             const url="http://localhost:8082/loanapp/get/users"
@@ -30,38 +29,45 @@ const CustomerManagement=()=>{
         }
         
     }
-    displayData()
-       
-        
+    useEffect(()=>{
+        displayData()  
     },[])
-    const dummyData=[
-        {
-            "userId":1,
-            "firstName":"Ahb",
-            "lastName":"Bbsghwf",
-            "age":21,
-            "emailId":"1@gamil.com"
-        },
-        {
-            "userId":2,
-            "firstName":"HVhb",
-            "lastName":"Hkkssghwf",
-            "age":23,
-            "emailId":"2@gamil.com"
-        },
-        {
-            "userId":3,
-            "firstName":"HJkzdAhb",
-            "lastName":"BIbsghwf",
-            "age":24,
-            "emailId":"3@gamil.com"
+    const onEdit =async(e)=>{
+        const userId=e.target.parentNode.id
+        navigate('/edit-user?id='+userId) 
+    }
+    const onDelete =async(e)=>{
+        const userId=e.target.parentNode.id
+        try{
+            const res= await fetch('http://localhost:8082/loanapp/users/delete',{
+                method:'POST',
+                mode:'cors',
+                body:JSON.stringify({
+                    userId
+                }),
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+           
+
+            const data = await res.text();
+            console.log(data)
         }
-    ]
+        catch(e){
+
+        }
+
+       await displayData()
+           
+
+    }
+
     return(
         <div>
             <Button variant="secondary" id="register-button" onClick={handleClick}>{register?'Show All Users': 'Register User'}</Button>
             <>
-            {register && <RegistrationForm onRegister={()=>{}}/>}
+            {register && <RegistrationForm onRegister={displayData}/>}
             </>
             {!register && <Table striped bordered hover>
             <thead>
@@ -84,8 +90,8 @@ const CustomerManagement=()=>{
                             <td>{user.lastName}</td>
                             <td>{user.userAge}</td>
                             <td>{user.userEmail}</td>
-                            <td><Button variant="link">Edit</Button></td>
-                            <td><Button variant="link">Delete</Button></td>
+                            <td id={user.userId}><Button variant="link" onClick={onEdit}>Edit</Button></td>
+                            <td id={user.userId}><Button variant="link" onClick={onDelete}>Delete</Button></td>
                         </tr>
                     ))
                 }
