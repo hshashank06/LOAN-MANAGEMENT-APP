@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import {Link} from 'react-router-dom'
-const RegistrationForm = ({onRegister}) =>{
+const RegistrationForm = ({onRegister,userId}) =>{
     const [firstName,setFirstName]=useState('')
     const [dob,setdob] = useState('');
     const [lastName,setLastName]=useState('')
@@ -43,6 +43,38 @@ const RegistrationForm = ({onRegister}) =>{
         }
     }
 
+
+    const updateUser= async(user)=>{
+        console.log(user)
+        try{
+            const res= await fetch('http://localhost:8082/loanapp/update/user/'+userId,{
+                method:'POST',
+                mode:'cors',
+                body:JSON.stringify(user),
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+           
+
+            const data = await res.text();
+            if(data === "The Fields have been updated"){
+                alert("User has been Updated")
+                await onRegister()
+            }
+            else{
+                alert("User could not be updated")
+            }
+
+        }
+        catch(e){
+            // console.log(e)
+            setRegistrationError(e)
+            console.log(registrationError)
+            
+        }
+    }
+
     const onSubmit=(e)=>{
         e.preventDefault()
         setErrorValues(checkValues({
@@ -52,9 +84,44 @@ const RegistrationForm = ({onRegister}) =>{
     }
 
     useEffect(()=>{
-        if(Object.keys(errorValues).length===0 && submit){  
-            registerUser({firstName,lastName,"userEmail":email,"userAge":age,"userdob":dob,"userPassword":password})
+        const displayData=async()=>{
+            try{
+                const url="http://localhost:8082/loanapp/get/users"
+                let options={
+                    method:'GET'
+                }
+                const res=await fetch(url,options)
+                const data=await res.json()
+                const desiredUser=data.find((el)=>el.userId==userId)
+                console.log(desiredUser)
+                // setUserValues(desiredUser)
+                console.log(data)
+                setFirstName(desiredUser.firstName)
+                setLastName(desiredUser.lastName)
+                setEmail(desiredUser.userEmail)
+                setPassword(desiredUser.userPassword)
+                setAge(desiredUser.userAge)
+                setdob(desiredUser.userdob)
+            }
+            catch(e){
+                console.log(e)
+            }
+            
         }
+        if(userId){
+            console.log("lol")
+            displayData()
+            // console.log(userValues)
+        }
+    },[])
+
+    useEffect(()=>{
+        if(Object.keys(errorValues).length===0 && submit){  
+            if(!userId)
+                registerUser({firstName,lastName,"userEmail":email,"userAge":age,"userdob":dob,"userPassword":password})
+            else
+                updateUser({firstName,lastName,"userEmail":email})
+            }
     },[errorValues])
 
     const checkValues=(val)=>{
@@ -118,10 +185,10 @@ const RegistrationForm = ({onRegister}) =>{
             
             <Form.Group>
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Add Password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+                <Form.Control type="password" placeholder="Add Password" value={password} disabled={userId?true:false} onChange={(e)=>setPassword(e.target.value)}/>
                 <p className='form-error'>{errorValues.password}</p>
             </Form.Group>
-            <Button type="submit" >Register</Button>
+            <Button type="submit" >{userId?'Update':'Register'}</Button>
             <Link to='/admin-dashboard'><Button variant="secondary" className="go-back">DashBoard</Button></Link>
 
         </Form>
