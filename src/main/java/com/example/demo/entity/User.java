@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 import java.util.Set;
 
@@ -8,6 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +21,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
+		
 
 @Entity
 public class User {
@@ -42,7 +45,7 @@ public class User {
 	@NotEmpty(message = "Email cannot be empty")
 	private String userEmail;
 	
-	@Column(name = "Age",nullable=false,columnDefinition="TEXT")
+	@Column(name = "Age",nullable=false)
 	@Min(value = 18, message="User Age cannot be Less than 18 for Loan Account")
 	private Integer userAge;
 	
@@ -55,6 +58,7 @@ public class User {
 	@NotEmpty(message = "Password cannot be empty")
 	@Size(min = 8, max = 20)
 	private String userPassword;
+		
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Loan> loan;
@@ -62,17 +66,39 @@ public class User {
 //	@OneToOne(mappedBy = "user")
 //	private Account account;
 	
-	public User(String firstName, String lastName, Long userId, String userEmail, Integer userAge, LocalDate userdob,
-			String userPassword) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.userId = userId;
-		this.userEmail = userEmail;
-		this.userAge = userAge;
-		this.userdob = userdob;
-		this.userPassword = userPassword;
+	
+	
+	public User() {
+	super();
+}
+	public User(
+		@NotNull(message = "First Name cannot be null") @NotEmpty(message = "First Name cannot be empty") String firstName,
+		@NotNull(message = "Last Name cannot be null") @NotEmpty(message = "Last Name cannot be Empty") String lastName,
+		Long userId,
+		@Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$") @NotEmpty(message = "Email cannot be empty") String userEmail,
+		@Min(value = 18, message = "User Age cannot be Less than 18 for Loan Account") Integer userAge,
+		LocalDate userdob, @NotEmpty(message = "Password cannot be empty") @Size(min = 8, max = 20) String userPassword,
+		Set<Loan> loan) {
+	super();
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.userId = userId;
+	this.userEmail = userEmail;
+	this.userAge = userAge;
+	this.userdob = userdob;
+	this.userPassword = userPassword;
+	this.loan = loan;
+	
+}
+	
+	
+	public Set<Loan> getLoan() {
+		return loan;
 	}
+	public void setLoan(Set<Loan> loan) {
+		this.loan = loan;
+	}
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -97,8 +123,8 @@ public class User {
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
-	public Integer getUserAge() {
-		return userAge;
+	public Integer getUserAge() {	
+		return Period.between(userdob,LocalDate.now()).getYears();
 	}
 	public void setUserAge(Integer userAge) {
 		this.userAge = userAge;
@@ -115,6 +141,8 @@ public class User {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
+	
+	
 	@Override
 	public String toString() {
 		return "User [firstName=" + firstName + ", lastName=" + lastName + ", userId=" + userId + ", userEmail="

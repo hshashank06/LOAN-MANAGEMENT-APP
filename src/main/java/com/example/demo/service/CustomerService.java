@@ -4,31 +4,43 @@ package com.example.demo.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.example.demo.entity.User;
 import com.example.demo.repository.AdminRepo;
+import com.example.demo.repository.ItemRepo;
+import com.example.demo.repository.LoanRepo;
 import com.example.demo.repository.UserRepo;
 
 import jakarta.transaction.Transactional;
-import utils.Role;
+
+
 
 @Service
-public class LoanAppService {
+public class CustomerService {
 	
 	@Autowired
 	UserRepo userRepo;
 	@Autowired
 	AdminRepo adminRepo;
+	@Autowired
+	ItemRepo itemRepo;
+	@Autowired
+	LoanRepo loanRepo;
 	
 	
-	public LoanAppService(UserRepo userRepo,AdminRepo adminRepo) {
+	public CustomerService(UserRepo userRepo,AdminRepo adminRepo,ItemRepo itemRepo,LoanRepo loanRepo) {
 		this.userRepo = userRepo;
 		this.adminRepo = adminRepo;
+		this.itemRepo = itemRepo;
+		this.loanRepo = loanRepo;
 	}
+
+	
 	public Boolean validateUserService(Long userId,String password) {
 		
 		boolean userExists = userRepo.existsByUserIdAndUserPassword(userId, password);
@@ -70,7 +82,7 @@ public class LoanAppService {
 	@Transactional
 	public void updateFields(Long entityId,Map<String,Object> updates) {
 		
-			Optional<User> user = userRepo.findById(entityId);
+			User user = userRepo.findById(entityId).orElse(null);
 		
 			if(user != null) {
 				for(Map.Entry<String,Object> entry : updates.entrySet()) {
@@ -79,24 +91,25 @@ public class LoanAppService {
 					
 					
 					if(fieldName.equals("firstName")) {
-						user.get().setFirstName((String) value);
+						user.setFirstName((String) value);
 						
 					}
 					
 					else if(fieldName.equals("lastName")) {
-						user.get().setLastName((String) value);
+						user.setLastName((String) value);
 					}
 					else if(fieldName.equals("userAge")) {
-						user.get().setUserAge((Integer) value);
+						user.setUserAge((Integer) value);
 					}
 					else if(fieldName.equals("userEmail")) {
-						user.get().setUserEmail((String) value);
+						user.setUserEmail((String) value);
 					}
 					else if(fieldName.equals("userdob")) {
-						user.get().setUserdob((LocalDate) value);
+						user.setUserdob((LocalDate) value);
 					}
 					
 				}
+				userRepo.save(user);
 				
 			}
 	}

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+
 @Entity
 public class Admin {
 	
@@ -35,6 +36,8 @@ public class Admin {
 	private LocalDate adminDOB;
 	
 	
+	
+	
 	public Admin(Long adminId, @NotEmpty(message = "First Name cannot be Empty") String firstName,
 			@NotEmpty(message = "Last Name cannot be Empty") String lastName,
 			@NotEmpty(message = "Password cannot be empty") @Size(min = 6, max = 18, message = "The Password size must be within 6 to 18 characters") String adminPassword,
@@ -47,9 +50,16 @@ public class Admin {
 		this.adminPassword = adminPassword;
 		this.adminAge = adminAge;
 		this.adminDOB = adminDOB;
+		
 	}
 	
 	
+	
+	
+	
+
+
+
 	@Override
 	public String toString() {
 		return "Admin [adminId=" + adminId + ", firstName=" + firstName + ", lastName=" + lastName + ", adminPassword="
