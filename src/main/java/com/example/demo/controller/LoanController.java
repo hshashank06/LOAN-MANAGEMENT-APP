@@ -3,10 +3,12 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,11 +32,18 @@ public class LoanController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/register/loan")
-	ResponseEntity<String> registerForNewLoan(@RequestBody @Valid Loan loan){
+	@PostMapping("/register/{userId}/loan")
+	ResponseEntity<String> registerForNewLoan(@PathVariable Long userId,@RequestBody @Valid Loan loan){
 		
-		loanService.registerForLoan(loan);
-		return ResponseEntity.ok("DONE");
+		Boolean result=loanService.registerForLoan(loan,userId);
+		
+		if(result) {
+			return ResponseEntity.status(HttpStatus.OK).body("NEW Loan REGISTERED");
+		}
+		else {
+			
+			return ResponseEntity.badRequest().body("NEW Loan COULLD NOT BE ADDED");
+			}
 	}
 	
 	@ResponseBody
@@ -45,15 +54,22 @@ public class LoanController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/loan/issue")
-	ResponseEntity<Boolean> issueLoan(@RequestBody Loan loan){
-		Long loanId = loan.getLoanId();
+	@PostMapping("/loan/{loanId}/issue")
+	ResponseEntity<Boolean> issueLoan(@PathVariable Long loanId,@RequestBody Loan loan){
+		
 		IssueStatus issueStatus = loan.getStatus();
 		Boolean result = loanService.issueOrRejectLoan(loanId, issueStatus);
 		return ResponseEntity.ok(result);
 		
 	}
-	
+	@ResponseBody
+	@PutMapping("/loan/{loanId}/update")
+	ResponseEntity<Boolean> updateLoan(@PathVariable Long loanId ,@RequestBody  @Valid Loan updatedLoan){
+	  
+		Boolean result = loanService.updateLoan(loanId, updatedLoan);
+		return ResponseEntity.ok(result);
+		
+	}
 	@ResponseBody
 	@GetMapping("/display/loan/all")
 	ResponseEntity<List<Loan>> displayAllLoans(){
