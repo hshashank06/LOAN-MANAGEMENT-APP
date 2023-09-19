@@ -110,11 +110,17 @@ public class ItemService {
 		
 
 		Loan loanItem = loanRepo.findById(loanId).orElse(null);
+		if(loanItem.getStatus().equals(IssueStatus.YES)) {
 		item.setLoan(loanItem);
 		System.out.println(item);
 		
 			itemRepo.save(item);
+			
 			return true;
+		}
+		else {
+			return false;
+		}
 		
 		
 	}
