@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import  Button  from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import {useState, useEffect} from 'react'
@@ -10,10 +10,11 @@ const LoanManagement=()=>{
         setLoan(!addLoan)
         console.log(addLoan)
     }
+    const navigate=useNavigate()
     
     const displayData=async()=>{
         try{
-            const url="http://localhost:8082/loanapp/display/loan/all"
+            const url="http://localhost:8082/loanapp/display/items"
             let options={
                 method:'GET'
             }
@@ -61,16 +62,19 @@ const LoanManagement=()=>{
 
     }
 
-
+    const onEdit =async(e)=>{
+        const itemId=e.target.parentNode.id
+        navigate('/edit-item?id='+itemId) 
+    }
     const onDelete=async(e)=>{
-        const loanId=e.target.parentNode.id
+        const itemId=e.target.parentNode.id
         try{
             console.log("delete")
-            const res= await fetch('http://localhost:8082/loanapp/delete/loan/'+loanId,{
-                method:'POST',
+            const res= await fetch('http://localhost:8082/loanapp/delete/item',{
+                method:'DELETE',
                 mode:'cors',
                 body:JSON.stringify({
-                    loanId
+                    itemId
                 }),
                 headers:{
                     'Content-Type':'application/json'
@@ -90,7 +94,7 @@ const LoanManagement=()=>{
     
     return(
         <div>
-            <Button variant="secondary" id="register-button" onClick={handleClick}>{addLoan?'Show All Loans': 'Apply Loans'}</Button>
+            <Button variant="secondary" id="register-button" onClick={handleClick}>{addLoan?'Show All Items': 'Register Items'}</Button>
             <>
             {addLoan && <RegistrationForm onRegister={()=>{}}/>}
             </>
@@ -98,26 +102,34 @@ const LoanManagement=()=>{
             <thead>
                 <tr>
                 <th>#</th>
-                <th>Loan Id</th>
-                <th>Loan Type</th>
-                <th>Loan Duration</th>
-                <th>User</th>
-                {/* <th>Items</th> */}
+                <th>Item Id</th>
+                <th>Description</th>
+                <th>Item Type</th>
+                <th>Item Make</th>
+                <th>Value</th>
+                <th>Issue Status</th>
+
+                {/* <th>User</th>
+                <th>Items</th> */}
                 </tr>
             </thead>
             <tbody>
                 {
-                    response && response.map((loanData)=>(
-                        <tr key={loanData.loan.loanId}>
-                            <td>{response.indexOf(loanData)+1}</td>
-                            <td>{loanData.loan.loanId}</td>
-                            <td>{loanData.loan.loanType}</td>
-                            <td>{loanData.loan.loanDuration}</td>
-                            <td>{loanData.user.firstName+' '+loanData.user.lastName}</td>
-                            {/* <td>{loan.item.length}</td> */}
-                            <td id={loanData.loan.loanId}><Button id="YES" variant="link" disabled={loanData.loan.status==="YES"?true:false} onClick={onApprove}>{loanData.loan.status==="YES"?'Approved':'Approve'}</Button></td>
-                            <td id={loanData.loan.loanId}><Button id="NO" variant="link" disabled={loanData.loan.status==="NO"?true:false} onClick={onApprove}>{loanData.loan.status==="NO"?'Rejected':'Reject'}</Button></td>
-                            <td id={loanData.loan.loanId}><Button variant="link" onClick={onDelete}>Delete</Button></td>
+                    response && response.map((item)=>(
+                        <tr key={item.itemId}>
+                            <td>{response.indexOf(item)+1}</td>
+                            <td>{item.itemId}</td>
+                            <td>{item.description}</td>
+                            <td>{item.itemType}</td>
+                            <td>{item.itemMake}</td>
+                            <td>{item.itemValue}</td>
+                            <td>{item.issueStatus}</td>
+                            {/* <td>{loan.user}</td>
+                            <td>{loan.item.length}</td> */}
+                            {/* <td id={loan.loanId}><Button id="YES" variant="link" disabled={loan.status==="YES"?true:false} onClick={onApprove}>{loan.status==="YES"?'Approved':'Approve'}</Button></td>
+                            <td id={loan.loanId}><Button id="NO" variant="link" disabled={loan.status==="NO"?true:false} onClick={onApprove}>{loan.status==="NO"?'Rejected':'Reject'}</Button></td> */}
+                            <td id={item.itemId}><Button variant="link" onClick={onEdit}>Edit</Button></td>
+                            <td id={item.itemId}><Button variant="link" onClick={onDelete}>Delete</Button></td>
 
                         </tr>
                     ))

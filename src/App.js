@@ -13,6 +13,7 @@ import Viewloan from './components/View_loan';
 import LoanApplyForm from './components/LoanApplyForm';
 import LoanNavBar from './components/navBar';
 import EditUser from './components/editUser';
+import ItemMangaement from './components/itemManagement';
 import { UserProvider } from './components/userContext';
 
 function App() {
@@ -41,11 +42,12 @@ function App() {
       
         <Route path='/loan-management' element={<LoanManagement/>}/>
         <Route path='/edit-user' element={<EditUser/>}/>
-
+        <Route path='/edit-item' element={<EditUser/>}/>
   
         <Route path='/user-dashboard' element={<Userdashboard/>} />
         <Route path='/view-loan' element={<Viewloan/>}/>
         < Route path='/apply-loan' element={<LoanApplyForm/>}/>
+        <Route path='/item-management' element={<ItemMangaement/>}/>
       </Routes> 
       
     </div>
