@@ -2,6 +2,8 @@ package com.example.demo.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import utils.IssueStatus;
 import utils.LoanType;
 
 @Entity
@@ -27,11 +30,16 @@ public class Loan {
 	@Column(name = "Loan Duration")
 	private Integer loanDuration;
 	
+	@Enumerated(EnumType.STRING)
+	private IssueStatus status;
+	
 	@ManyToOne
-	@JoinColumn(name = "user_id",referencedColumnName = "userId")
+	@JoinColumn(name = "userId",referencedColumnName = "userId")
+	@JsonIgnore
 	private User user;
 	
 	@OneToMany(mappedBy = "loan",cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Item> item;
 	
 	
@@ -59,6 +67,18 @@ public class Loan {
 	public void setItem(Set<Item> item) {
 		this.item = item;
 	}
+	
+	
+
+
+	public IssueStatus getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(IssueStatus status) {
+		this.status = status;
+	}
 
 
 	public Long getLoanId() {
@@ -79,17 +99,25 @@ public class Loan {
 	public void setLoanDuration(Integer loanDuration) {
 		this.loanDuration = loanDuration;
 	}
-	public Loan(Long loanId, LoanType loanType, Integer loanDuration) {
+
+
+	public Loan(Long loanId, LoanType loanType, Integer loanDuration, IssueStatus status, User user, Set<Item> item) {
 		super();
 		this.loanId = loanId;
 		this.loanType = loanType;
 		this.loanDuration = loanDuration;
+		this.status = status;
+		this.user = user;
+		this.item = item;
 	}
-	
+
+
 	@Override
 	public String toString() {
-		return "Loan [loanId=" + loanId + ", loanType=" + loanType + ", loanDuration=" + loanDuration + "]";
+		return "Loan [loanId=" + loanId + ", loanType=" + loanType + ", loanDuration=" + loanDuration + ", status="
+				+ status + ", user=" + user + ", item=" + item + "]";
 	}
+	
 	
 	
 	

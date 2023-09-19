@@ -104,6 +104,7 @@ public class CustomerController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<String> updateTheFields(@PathVariable Long id,@RequestBody Map<String, Object> updates){
 		
+		System.out.println("Hi");
 			customerService.updateFields(id, updates);
 			return ResponseEntity.ok("The Fields have been updated");
 		
