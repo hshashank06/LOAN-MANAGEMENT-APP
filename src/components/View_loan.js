@@ -1,7 +1,34 @@
-import {Link} from 'react-router-dom'
+import {Link, useLocation} from 'react-router-dom'
 import  Button  from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
+import { useContext, useEffect, useState } from 'react'
+import { UserContext, useUser } from './userContext'
 const Viewloan=()=>{
+    const [response,setResponse] = useState([]);
+    const location = useLocation();
+    const {userId,setUserId} = useContext(UserContext);
+    console.log(userId);
+
+    const getDataFromBackend = async () => {
+        const url = `http://localhost:8082/loanapp/display/loan/userId/${userId}`
+        let options = {
+            method : 'GET',
+            mode : 'cors',
+            headers:{
+                'Content-Type':'application/json'
+            },
+        }
+        const response = await fetch(url,options)
+        const data = await response.json();
+        console.log(data)
+        setResponse(data)
+
+    }
+
+    useEffect(() => {
+        getDataFromBackend();
+    },[])
+
     const dummyData=[
         {
             "loantype":"Educational loan",
@@ -26,23 +53,23 @@ const Viewloan=()=>{
             <thead>
                 <tr>
                 <th>#</th>
-                <th>Loan Type </th>
-                <th>Loan Account Number</th>
-                <th>Principle Amount</th>
-                <th>Interest rate</th>
-                <th> Repayment Period</th>
+                <th>Loan Id</th>
+                <th>Loan Type</th>
+                <th>Loan Duration</th>
+                <th>Loan Status</th>
+                
                 </tr>
             </thead>
             <tbody>
                 {
-                    dummyData && dummyData.map((loan)=>(
-                        <tr key={loan.loantype}>
-                            <td>{dummyData.indexOf(loan)+1}</td>
-                            <td>{loan.loantype}</td>
-                            <td>{loan.accountnumber}</td>
-                            <td>{loan.principleamount}</td>
-                            <td>{loan.interestrate}</td>
-                            <td>{loan.Repaymentperiod}</td>
+                    response && response.map((loan)=>(
+                        <tr key={loan.loanId}>
+                            <td>{response.indexOf(loan)+1}</td>
+                            <td>{loan.loanId}</td>
+                            <td>{loan.loanType}</td>
+                            <td>{loan.loanDuration}</td>
+                            <td>{loan.status}</td>
+                            
                         </tr>
                     ))
                 }

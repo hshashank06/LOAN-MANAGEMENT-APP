@@ -13,6 +13,7 @@ import Viewloan from './components/View_loan';
 import LoanApplyForm from './components/LoanApplyForm';
 import LoanNavBar from './components/navBar';
 import EditUser from './components/editUser';
+import { UserProvider } from './components/userContext';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
   }
 
   return (
+    <UserProvider>
     <Router>
       <div className="App">
       <LoanNavBar/>
@@ -32,17 +34,23 @@ function App() {
           </>
         } />
         <Route path='/register' element={<RegistrationForm onRegister={registerUser}/>} />
-        <Route path='/user-dashboard' element={<Userdashboard/>} />
+        
         <Route path='/admin-dashboard' element={<AdminDashboard/>} />
         <Route path='/customer' element={<CustomerManagement/>}/>
-       <Route path='/view-loan' element={<Viewloan/>}/>
-      < Route path='/apply-loan' element={<LoanApplyForm/>}/>
+       
+      
         <Route path='/loan-management' element={<LoanManagement/>}/>
         <Route path='/edit-user' element={<EditUser/>}/>
+
+  
+        <Route path='/user-dashboard' element={<Userdashboard/>} />
+        <Route path='/view-loan' element={<Viewloan/>}/>
+        < Route path='/apply-loan' element={<LoanApplyForm/>}/>
       </Routes> 
       
     </div>
     </Router>
+    </UserProvider>
     
   );
 }

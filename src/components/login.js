@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import {useState, useEffect} from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import {useNavigate} from 'react-router-dom'
+import { UserContext, useUser } from "./userContext";
 function Login(){
 
 
-    const [userId,setUserId] = useState();
+    const {userId,setUserId}= useContext(UserContext);
     const [userPassword,setUserPassword] = useState();
     const [isAdmin,setAdmin]=useState(false)
     const navigate=useNavigate()
@@ -46,8 +47,10 @@ function Login(){
             console.log(data)
             if(data === "TRUE"){
                 // alert("LOGIN IS COMPLETE")
-                if(!adminLogin)
-                navigate('/user-dashboard')
+                if(!adminLogin){
+                    console.log(userId)
+                navigate('/user-dashboard',{state:{dataToSend:userId}})
+                }
                 else
                 navigate('/admin-dashboard')
             }
