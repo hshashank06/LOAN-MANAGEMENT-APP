@@ -69,8 +69,9 @@ public class LoanService {
 	 public List<LoanReturnValue> displayAllLoans(){
 		 List<Loan> loanList = loanRepo.findAll();
 		 List<LoanReturnValue> loanReturn = new ArrayList<>();
-		 LoanReturnValue loanReturnValue = new LoanReturnValue();
+		
 		 for(Loan loan:loanList) {
+			 LoanReturnValue loanReturnValue = new LoanReturnValue();
 			 loanReturnValue.setLoan(loan);
 			
 			 User user= (User) loan.getUser();
