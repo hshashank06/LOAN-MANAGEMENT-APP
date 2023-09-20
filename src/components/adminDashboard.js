@@ -7,7 +7,7 @@ const AdminDashboard=()=>{
             <div>
                 <Link to="/customer"><Button className='dashboard-btn'>Customer Data Management</Button></Link>
                 <Link to="/loan-management"><Button className='dashboard-btn'>Loan Card Management</Button></Link>
-                <Link to="/"><Button className='dashboard-btn'>Items Master Data</Button></Link>
+                <Link to="/item-management"><Button className='dashboard-btn'>Items Master Data</Button></Link>
             </div>
             
         </div>
