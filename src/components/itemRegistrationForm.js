@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import {Link} from 'react-router-dom'
-const ItemForm = ({onRegister,userId}) =>{
+const ItemForm = ({onRegister,itemId}) =>{
     const [description,setDescription]=useState('')
     const [issueStatus,setIssueStatus]=useState('')
     const [itemMake,setItemMake]=useState('')
@@ -51,13 +51,13 @@ const ItemForm = ({onRegister,userId}) =>{
     }
 
 
-    const updateUser= async(user)=>{
-        console.log(user)
+    const updateItem= async(item)=>{
+        console.log(item)
         try{
-            const res= await fetch('http://localhost:8082/loanapp/update/user/'+userId,{
+            const res= await fetch('http://localhost:8082/loanapp/update/item/'+itemId,{
                 method:'POST',
                 mode:'cors',
-                body:JSON.stringify(user),
+                body:JSON.stringify(item),
                 headers:{
                     'Content-Type':'application/json'
                 }
@@ -65,12 +65,12 @@ const ItemForm = ({onRegister,userId}) =>{
            
 
             const data = await res.text();
-            if(data === "The Fields have been updated"){
-                alert("User has been Updated")
+            if(data === "Item fields updated"){
+                alert("Item has been Updated")
                 await onRegister()
             }
             else{
-                alert("User could not be updated")
+                alert("Item could not be updated")
             }
 
         }
@@ -94,29 +94,29 @@ const ItemForm = ({onRegister,userId}) =>{
     useEffect(()=>{
         const displayData=async()=>{
             try{
-                const url="http://localhost:8082/loanapp/get/users"
+                const url="http://localhost:8082/loanapp/display/items"
                 let options={
                     method:'GET'
                 }
                 const res=await fetch(url,options)
                 const data=await res.json()
-                const desiredUser=data.find((el)=>el.userId==userId)
-                console.log(desiredUser)
+                const desiredItem=data.find((el)=>el.itemId==itemId)
+                console.log(desiredItem)
                 // setUserValues(desiredUser)
                 console.log(data)
-                setFirstName(desiredUser.firstName)
-                setLastName(desiredUser.lastName)
-                setEmail(desiredUser.userEmail)
-                setPassword(desiredUser.userPassword)
-                setAge(desiredUser.userAge)
-                setdob(desiredUser.userdob)
+                setDescription(desiredItem.description)
+                setIssueStatus(desiredItem.issueStatus)
+                setItemMake(desiredItem.itemMake)
+                setItemValue(desiredItem.itemValue)
+                setItemType(desiredItem.itemType)
+                setLoanId(desiredItem.loanId)
             }
             catch(e){
                 console.log(e)
             }
             
         }
-        if(userId){
+        if(itemId){
             console.log("lol")
             displayData()
             // console.log(userValues)
@@ -125,10 +125,10 @@ const ItemForm = ({onRegister,userId}) =>{
 
     useEffect(()=>{
         if(Object.keys(errorValues).length===0 && submit){  
-            if(!userId)
+            if(!loanId)
                 registerItem({description,issueStatus,itemMake,itemType,itemValue,loanId})
             else
-                updateUser({firstName,lastName,"userEmail":email})
+                updateItem({description,issueStatus,itemMake,itemType})
             }
     },[errorValues])
 
@@ -214,7 +214,7 @@ const ItemForm = ({onRegister,userId}) =>{
                 <Form.Control type="number" placeholder="Enter an approved Loan Id" value={loanId} onChange={(e)=>setLoanId(e.target.value)}/>
                 <p className='form-error'>{errorValues.loanId}</p>
             </Form.Group>
-            <Button type="submit" >{userId?'Update':'Register'}</Button>
+            <Button type="submit" >{itemId?'Update':'Register'}</Button>
             <Link to='/admin-dashboard'><Button variant="secondary" className="go-back">DashBoard</Button></Link>
 
         </Form>

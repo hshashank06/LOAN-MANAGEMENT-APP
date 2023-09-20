@@ -16,6 +16,7 @@ import EditUser from './components/editUser';
 import ItemMangaement from './components/itemManagement';
 import { UserProvider } from './components/userContext';
 import ItemPurchased from './components/itemPurchased';
+import EditItem from './components/editItem';
 
 function App() {
 
@@ -43,7 +44,7 @@ function App() {
       
         <Route path='/loan-management' element={<LoanManagement/>}/>
         <Route path='/edit-user' element={<EditUser/>}/>
-        <Route path='/edit-item' element={<EditUser/>}/>
+        <Route path='/edit-item' element={<EditItem/>}/>
   
         <Route path='/user-dashboard' element={<Userdashboard/>} />
         <Route path='/view-loan' element={<Viewloan/>}/>
