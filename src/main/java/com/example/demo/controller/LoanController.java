@@ -19,6 +19,7 @@ import com.example.demo.service.LoanService;
 
 import jakarta.validation.Valid;
 import utils.IssueStatus;
+import utils.LoanReturnValue;
 
 @RestController
 @RequestMapping(value = "/loanapp")
@@ -72,8 +73,8 @@ public class LoanController {
 	}
 	@ResponseBody
 	@GetMapping("/display/loan/all")
-	ResponseEntity<List<Loan>> displayAllLoans(){
-		List<Loan> result = loanService.displayAllLoans();
+	ResponseEntity<List<LoanReturnValue>> displayAllLoans(){
+		List<LoanReturnValue> result = loanService.displayAllLoans();
 		return ResponseEntity.ok(result);
 	}
 	

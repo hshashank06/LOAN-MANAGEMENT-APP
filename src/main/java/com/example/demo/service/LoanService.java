@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import com.example.demo.repository.LoanRepo;
 import com.example.demo.repository.UserRepo;
 
 import utils.IssueStatus;
+import utils.LoanReturnValue;
 
 @Service
 public class LoanService {
@@ -21,10 +23,14 @@ public class LoanService {
 	@Autowired
 	UserRepo userRepo;
 	
+	
+	
 	public LoanService(LoanRepo loanRepo) {
 		this.loanRepo = loanRepo;
+		
 	}
 	
+
 	public Boolean registerForLoan(Loan loan,Long userId) {
 		loan.setStatus(IssueStatus.NO);
 		User user=userRepo.findById(userId).orElse(null);
@@ -36,6 +42,7 @@ public class LoanService {
 	}else {
 			return false;
 		}
+	
 		
 	}
     public Boolean updateLoan(Long loanId, Loan updatedLoan) {
@@ -59,9 +66,18 @@ public class LoanService {
 		List<Loan> loanList = loanRepo.findByUserId(userId);
 		return loanList;
 	}
-	 public List<Loan> displayAllLoans(){
+	 public List<LoanReturnValue> displayAllLoans(){
 		 List<Loan> loanList = loanRepo.findAll();
-		 return loanList;
+		 List<LoanReturnValue> loanReturn = new ArrayList<>();
+		 LoanReturnValue loanReturnValue = new LoanReturnValue();
+		 for(Loan loan:loanList) {
+			 loanReturnValue.setLoan(loan);
+			
+			 User user= (User) loan.getUser();
+			 loanReturnValue.setUser(user);
+			 loanReturn.add(loanReturnValue);
+		 }
+		 return loanReturn;
 	 }
 	 
 	 public Boolean issueOrRejectLoan(Long loanId,IssueStatus status) {
