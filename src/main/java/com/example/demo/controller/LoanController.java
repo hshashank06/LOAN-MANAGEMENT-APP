@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import utils.LoanReturnValue;
 
 @RestController
 @RequestMapping(value = "/loanapp")
+@CrossOrigin(origins = "http://localhost:3000")
 public class LoanController {
 	
 	@Autowired
@@ -31,15 +33,17 @@ public class LoanController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/register/loan")
-	ResponseEntity<String> registerForNewLoan(@RequestBody @Valid Loan loan){
+	@PostMapping("/register/loan/{userId}")
+	@CrossOrigin(origins = "http://localhost:3000")
+	ResponseEntity<String> registerForNewLoan(@PathVariable("userId") Long userId,@RequestBody @Valid Loan loan){
 		
-		loanService.registerForLoan(loan);
+		loanService.registerForLoan(userId,loan);
 		return ResponseEntity.ok("DONE");
 	}
 	
 	@ResponseBody
 	@GetMapping("/display/loan/userId/{userId}")
+	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<List<Loan>> displaLoansGivenUserId(@PathVariable("userId") Long userId){
 		List<Loan> result = loanService.displayLoansForGivenId(userId);
 		return ResponseEntity.ok(result);
