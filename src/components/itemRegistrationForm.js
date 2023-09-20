@@ -20,12 +20,12 @@ const ItemForm = ({onRegister,userId}) =>{
     const [submit,setSubmit]=useState(false)
     const [registrationError,setRegistrationError]=useState({})
 
-    const registerUser= async(user)=>{
-        console.log(user)
+    const registerItem= async(item)=>{
+        console.log(item)
         try{
-            const res= await fetch('http://localhost:8082/loanapp/register/user',{
+            const res= await fetch('http://localhost:8082/loanapp/register/item/'+item.loanId,{
                 method:'POST',
-                body:JSON.stringify(user),
+                body:JSON.stringify(item),
                 headers:{
                     'Content-Type':'application/json'
                 }
@@ -33,11 +33,11 @@ const ItemForm = ({onRegister,userId}) =>{
            
 
             const data = await res.text();
-            if(data === "NEW USER REGISTERED"){
-                alert("New User has been Registered")
+            if(data === "True"){
+                alert("True")
                 await onRegister()
             }
-            else if(data === "NEW USER COULLD NOT BE ADDED"){
+            else if(data === "False"){
                 alert("User could not be registered")
             }
 
@@ -85,11 +85,12 @@ const ItemForm = ({onRegister,userId}) =>{
     const onSubmit=(e)=>{
         e.preventDefault()
         setErrorValues(checkValues({
-            firstName,lastName,email,age,password
+            description,issueStatus,itemMake,itemValue,itemType,loanId
         }))
         setSubmit(true)
     }
-
+    const itemMakeValues=['Wooden','Glass','Furniture','Steel','Plastic','Iron','Paper']
+    const itemTypeValues=['CAR','FURNITURE','EDUCATION','HOME','MEDICAL','ACCIDENT','PROPERTY']
     useEffect(()=>{
         const displayData=async()=>{
             try{
@@ -125,39 +126,38 @@ const ItemForm = ({onRegister,userId}) =>{
     useEffect(()=>{
         if(Object.keys(errorValues).length===0 && submit){  
             if(!userId)
-                registerUser({firstName,lastName,"userEmail":email,"userAge":age,"userdob":dob,"userPassword":password})
+                registerItem({description,issueStatus,itemMake,itemType,itemValue,loanId})
             else
                 updateUser({firstName,lastName,"userEmail":email})
             }
     },[errorValues])
 
     const checkValues=(val)=>{
-        const regex=/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
         const errors={}
-        if(!val.firstName){
-            errors.firstName='First Name is required!'
+        if(!val.description){
+            errors.description='Please add some description!'
         }
-        if(!val.lastName){
-            errors.lastName='Last Name is required!'
+        if(!val.issueStatus || (!val.issueStatus==='NO' && !val.issueStatus==='YES')){
+            console.log(val.issueStatus)
+
+            errors.issueStatus='Issue Status must be Yes or No!'
         }
-        if(!val.email){
-            errors.email='Email is required!'
+        else{
+            console.log(val.issueStatus)
         }
-        else if(!regex.test(val.email)){
-            errors.email='Enter valid email format!'
+        if(itemMakeValues.indexOf(val.itemMake)===-1){
+            errors.itemMake='Select a valid item make from the drop-down!'
         }
-        if(!val.password){
-            errors.password='Password is required!'
+        if(itemTypeValues.indexOf(val.itemType)===-1){
+            errors.itemType='Select a valid item type from the drop-down!'
         }
-        else if(val.password.length<8 || val.password.length>16){
-            errors.password='Password must have atleast 8 characters and atmost 16!'
+        if(!val.itemValue){
+            errors.itemValue='Value is required!'
         }
-        if(!val.age){
-            errors.age='Age is required!'
+        if(!val.loanId){
+            errors.loanId='Loan Id is required!'
         }
-        else if(val.age<18){
-            errors.age='You must be 18 years or above to register!'
-        }
+        
         return errors
     }
 
@@ -168,7 +168,7 @@ const ItemForm = ({onRegister,userId}) =>{
             <Form.Group>
                 <Form.Label>Description</Form.Label>
                 <Form.Control type="text" placeholder="Add description" value={description} onChange={(e)=>setDescription(e.target.value)}/>
-                <p className='form-error'>{errorValues.firstName}</p>
+                <p className='form-error'>{errorValues.description}</p>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Issue Status</Form.Label>
@@ -176,28 +176,43 @@ const ItemForm = ({onRegister,userId}) =>{
                 <option value = "">Choose an issue status</option>
                 <option value = "YES">YES</option>
                 <option value = "NO">NO</option>
-                <p className='form-error'>{errorValues.lastName}</p>
                 </Form.Control>
+                <p className='form-error'>{errorValues.issueStatus}</p>
             </Form.Group>
             <Form.Group>
-                <Form.Label>Email Id</Form.Label>
-                <Form.Control type="text" placeholder="Add Email Id" value={email} onChange={(e)=>setEmail(e.target.value)}/>
-                <p className='form-error'>{errorValues.email}</p>
+                <Form.Label>Item Make</Form.Label>
+                <Form.Control as="select" placeholder="Select Item Make" value={itemMake} onChange={(e)=>setItemMake(e.target.value)}>
+                <option value = "">Choose an item make</option>
+                {
+                itemMakeValues  && itemMakeValues.map((opt)=>(
+                    <option key={opt} value= {opt}>{opt}</option>
+                    ))
+                }
+                </Form.Control>
+                <p className='form-error'>{errorValues.itemMake}</p>
             </Form.Group>
             <Form.Group>
-                <Form.Label>Age</Form.Label>
-                <Form.Control type="number" placeholder="Add Age" value={age} onChange={(e)=>setAge(e.target.value)}/>
-                <p className='form-error'>{errorValues.age}</p>
+                <Form.Label>Value</Form.Label>
+                <Form.Control type="number" placeholder="Add Value" value={itemValue} onChange={(e)=>setItemValue(e.target.value)}/>
+                <p className='form-error'>{errorValues.itemValue}</p>
             </Form.Group>
             <Form.Group>
-                <Form.Label>Date Of Birth</Form.Label>
-                <Form.Control type="date" value={dob} onChange={(e)=>setdob(e.target.value)}/>
+                <Form.Label>Type</Form.Label>
+                <Form.Control as="select" placeholder="Select Item Type" value={itemType} onChange={(e)=>setItemType(e.target.value)}>
+                <option value = "">Choose an item type</option>
+                {
+                itemTypeValues  && itemTypeValues.map((opt)=>(
+                    <option key={opt} value= {opt}>{opt}</option>
+                    ))
+                }
+                </Form.Control>
+                <p className='form-error'>{errorValues.itemType}</p>
             </Form.Group>
             
             <Form.Group>
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Add Password" value={password} disabled={userId?true:false} onChange={(e)=>setPassword(e.target.value)}/>
-                <p className='form-error'>{errorValues.password}</p>
+                <Form.Label>Loan Id</Form.Label>
+                <Form.Control type="number" placeholder="Enter an approved Loan Id" value={loanId} onChange={(e)=>setLoanId(e.target.value)}/>
+                <p className='form-error'>{errorValues.loanId}</p>
             </Form.Group>
             <Button type="submit" >{userId?'Update':'Register'}</Button>
             <Link to='/admin-dashboard'><Button variant="secondary" className="go-back">DashBoard</Button></Link>

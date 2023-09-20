@@ -97,7 +97,7 @@ const LoanManagement=()=>{
         <div>
             <Button variant="secondary" id="register-button" onClick={handleClick}>{addLoan?'Show All Items': 'Register Items'}</Button>
             <>
-            {addLoan && <ItemForm onRegister={()=>{}}/>}
+            {addLoan && <ItemForm onRegister={displayData}/>}
             </>
             {!addLoan && <Table striped bordered hover>
             <thead>
