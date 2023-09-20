@@ -62,6 +62,7 @@ public class ItemController {
 
 	@ResponseBody
 	@GetMapping("/display/items/loanId/{loanId}")
+	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<List<Item>> displayItemsForLoanId(@PathVariable("loanId") Long loanId) {
 		List<Item> results = itemService.displayItemsForGivenLoanIds(loanId);
 		return ResponseEntity.ok(results);
@@ -90,6 +91,7 @@ public class ItemController {
 	}
 
 	@PostMapping("/update/item/{itemId}")
+	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<String> editItem(@PathVariable("itemId") Long itemId, @RequestBody Map<String, Object> fieldMap) {
 
 		System.out.println(fieldMap);

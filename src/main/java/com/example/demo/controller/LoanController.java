@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 
 import com.example.demo.entity.Loan;
 import com.example.demo.service.LoanService;
@@ -34,6 +36,7 @@ public class LoanController {
 	
 	@ResponseBody
 	@PostMapping("/register/{userId}/loan")
+	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<String> registerForNewLoan(@PathVariable Long userId,@RequestBody @Valid Loan loan){
 		
 		Boolean result=loanService.registerForLoan(loan,userId);
@@ -49,6 +52,7 @@ public class LoanController {
 	
 	@ResponseBody
 	@GetMapping("/display/loan/userId/{userId}")
+	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<List<Loan>> displaLoansGivenUserId(@PathVariable("userId") Long userId){
 		List<Loan> result = loanService.displayLoansForGivenId(userId);
 		return ResponseEntity.ok(result);
@@ -56,6 +60,7 @@ public class LoanController {
 	
 	@ResponseBody
 	@PostMapping("/loan/{loanId}/issue")
+	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<Boolean> issueLoan(@PathVariable Long loanId,@RequestBody Loan loan){
 		
 		IssueStatus issueStatus = loan.getStatus();
@@ -65,6 +70,7 @@ public class LoanController {
 	}
 	@ResponseBody
 	@PutMapping("/loan/{loanId}/update")
+	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<Boolean> updateLoan(@PathVariable Long loanId ,@RequestBody  @Valid Loan updatedLoan){
 	  
 		Boolean result = loanService.updateLoan(loanId, updatedLoan);
@@ -73,6 +79,7 @@ public class LoanController {
 	}
 	@ResponseBody
 	@GetMapping("/display/loan/all")
+	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<List<LoanReturnValue>> displayAllLoans(){
 		List<LoanReturnValue> result = loanService.displayAllLoans();
 		return ResponseEntity.ok(result);
@@ -80,6 +87,7 @@ public class LoanController {
 	
 	@ResponseBody
 	@PostMapping("/delete/loan/{loanId}")
+	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<String> deleteLoan(@PathVariable("loanId") Long loanId){
 		loanService.deleteLoan(loanId);
 		return ResponseEntity.ok("REMOVED");
