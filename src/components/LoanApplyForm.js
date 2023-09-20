@@ -10,15 +10,15 @@ const LoanApplyForm = () =>{
     const [loanType,setLoanType] = useState("");
     const options = ["CAR","FURNITURE","EDUCATION","HOME","MEDICAL","ACCIDENT","PROPERTY"]
     const [loanduration,setLoanDuration] = useState("");
-    const {userId} = useContext(UserContext);
-
+    // const {userId} = useContext(UserContext);
+    const userId=localStorage.getItem('userId')
     const registerLoan = async () => {
 
         const dataToSend = {
             loanType : loanType,
             loanDuration:loanduration,
         }
-        const url = `http://localhost:8082/loanapp/register/loan/${userId}`
+        const url = `http://localhost:8082/loanapp/register/${userId}/loan`
         const options = {
             method : 'POST',
             mode: 'cors',
@@ -73,7 +73,7 @@ const LoanApplyForm = () =>{
                 {/* </Col> */}
             </Form.Group>
             
-            <Button className="mt-2 ml-2 mr-2" type="button" onClick={onButtonClick}>Apply</Button>
+            <Button className="mt-2 ml-2 mr-2" type="submit" onClick={onButtonClick}>Apply</Button>
             <Link  to='/user-dashboard'><Button className="mt-2 ml-2 mr-2" variant="secondary" >Go Back</Button></Link>
 
         </Form>

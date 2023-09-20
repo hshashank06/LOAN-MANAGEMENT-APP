@@ -49,6 +49,7 @@ function Login(){
                 // alert("LOGIN IS COMPLETE")
                 if(!adminLogin){
                     console.log(userId)
+                    localStorage.setItem('userId',userId)
                 navigate('/user-dashboard')
                 }
                 else

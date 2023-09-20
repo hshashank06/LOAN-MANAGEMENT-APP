@@ -6,9 +6,9 @@ import { UserContext, useUser } from './userContext'
 const Viewloan=()=>{
     const [response,setResponse] = useState([]);
     const location = useLocation();
-    const {userId,setUserId} = useContext(UserContext);
-    console.log(userId);
-
+    // const {userId,setUserId} = useContext(UserContext);
+    // console.log(userId);
+    const userId=localStorage.getItem('userId')
     const getDataFromBackend = async () => {
         const url = `http://localhost:8082/loanapp/display/loan/userId/${userId}`
         let options = {

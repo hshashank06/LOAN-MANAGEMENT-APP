@@ -37,7 +37,7 @@ const LoanManagement=()=>{
             let status="YES"
             if(e.target.id=="NO")
             status="NO"
-            const res= await fetch('http://localhost:8082/loanapp/loan/issue',{
+            const res= await fetch(`http://localhost:8082/loanapp/loan/${loanId}/issue`,{
                 method:'POST',
                 mode:'cors',
                 body:JSON.stringify({

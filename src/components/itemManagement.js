@@ -3,6 +3,7 @@ import  Button  from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import {useState, useEffect} from 'react'
 import RegistrationForm from './registrationForm'
+import ItemForm from './itemRegistrationForm'
 const LoanManagement=()=>{
     const [addLoan,setLoan]=useState(false)
     const [response,setResponse]=useState([])
@@ -96,7 +97,7 @@ const LoanManagement=()=>{
         <div>
             <Button variant="secondary" id="register-button" onClick={handleClick}>{addLoan?'Show All Items': 'Register Items'}</Button>
             <>
-            {addLoan && <RegistrationForm onRegister={()=>{}}/>}
+            {addLoan && <ItemForm onRegister={()=>{}}/>}
             </>
             {!addLoan && <Table striped bordered hover>
             <thead>

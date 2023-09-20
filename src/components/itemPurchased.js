@@ -8,7 +8,8 @@ const ItemPurchased = () => {
 
     const navigation = useNavigate();
     const [response,setResponse] = useState([]);
-    const {userId} = useUser();
+    // const {userId} = useUser();
+    const userId=localStorage.getItem('userId')
 
     const setItemsPurchased = async () => {
         const url = `http://localhost:8082/loanapp/display/user/${userId}/items`
