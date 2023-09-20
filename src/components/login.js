@@ -49,7 +49,7 @@ function Login(){
                 // alert("LOGIN IS COMPLETE")
                 if(!adminLogin){
                     console.log(userId)
-                navigate('/user-dashboard',{state:{dataToSend:userId}})
+                navigate('/user-dashboard')
                 }
                 else
                 navigate('/admin-dashboard')

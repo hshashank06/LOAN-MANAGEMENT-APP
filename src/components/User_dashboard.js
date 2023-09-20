@@ -17,6 +17,10 @@ function Userdashboard()
 
         navigate("/view-loan",{state:{userId:userId}})
     }
+
+    const viewItemsPurchased = () => {
+        navigate("/items-purchased")
+    }
     return(
         <>
         <div style={{
@@ -28,11 +32,13 @@ function Userdashboard()
             height: "50h"
         }}>
             <h1>User Dashboard</h1>
-           <div style={{margin : "50px"}} >  </div><Button variant="primary" size="lg" onClick={viewLoansPage}>View Loan</Button>
+           <div style={{margin : "50px"}} >  </div>
+           <Button variant="primary" size="lg" onClick={viewLoansPage}>View Loan</Button>
            <Link to='/apply-loan'> <Button variant="primary" size="lg" > Apply For Loan</Button> </Link>
-            <Link to= '/'> <Button variant="primary" size="lg">
+             <Button variant="primary" size="lg" onClick = {viewItemsPurchased}>
                 View Items Purchased
-            </Button> </Link>
+            </Button> 
+            
         </div>
         </>
     );

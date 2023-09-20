@@ -1,19 +1,43 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useContext} from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import {Link} from 'react-router-dom'
 import { Col } from 'react-bootstrap'
+import { UserContext } from './userContext'
 
 const LoanApplyForm = () =>{
-    const [firstName,setFirstName]=useState('')
-    const [dob,setdob] = useState('');
-    const [lastName,setLastName]=useState('')
-    const [email,setEmail]=useState('')
-    const [age,setAge]=useState('')
-    const [password,setPassword]=useState('')
-    const [errorValues,setErrorValues]=useState({})
-    const [submit,setSubmit]=useState(false)
-    const [registrationError,setRegistrationError]=useState({})
+
+    const [loanType,setLoanType] = useState("");
+    const options = ["CAR","FURNITURE","EDUCATION","HOME","MEDICAL","ACCIDENT","PROPERTY"]
+    const [loanduration,setLoanDuration] = useState("");
+    const {userId} = useContext(UserContext);
+
+    const registerLoan = async () => {
+
+        const dataToSend = {
+            loanType : loanType,
+            loanDuration:loanduration,
+        }
+        const url = `http://localhost:8082/loanapp/register/loan/${userId}`
+        const options = {
+            method : 'POST',
+            mode: 'cors',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(dataToSend)
+        }
+
+        const response = await fetch(url,options);
+        const reply = await response.text();
+    }
+
+    const onButtonClick = () => {
+        registerLoan();
+        setLoanType('');
+        setLoanDuration(null);
+    }
+    
     return(
        <div style={{
         margin:"auto",
@@ -28,29 +52,29 @@ const LoanApplyForm = () =>{
                 
                 {/* <Col xs={3}> */}
                 <Form.Label>Loan Type</Form.Label>
-                <Form.Control type="text" placeholder="Add Loan Type" />
+                <Form.Control as="select" value={loanType} onChange={(event) => {setLoanType(event.target.value)}} >
+                <option value = "">Choose A Loan Type</option>
+                <option value = "CAR">CAR</option>
+                <option value = "FURNITURE">FURNITURE</option>
+                <option value = "EDUCATION">EDUCATION</option>
+                <option value = "HOME">HOME</option>
+                <option value = "MEDICAL">MEDICAL</option>
+                <option value = "ACCIDENT">ACCIDENT</option>
+                <option value = "PROPERTY">PROPERTY</option>
+                
+                
                 {/* </Col> */}
+                </Form.Control>
             </Form.Group>
             <Form.Group>
                 {/* <Col xs={3}> */}
-                <Form.Label>Loan Amount</Form.Label>
-                <Form.Control type="text" placeholder="Add Loan Amount" />
+                <Form.Label>Loan Duration</Form.Label>
+                <Form.Control type="text" placeholder="Add a Loan Duration" onChange = {(event) => {setLoanDuration(event.target.value)}} />
                 {/* </Col> */}
             </Form.Group>
-            <Form.Group>
-                {/* <Col xs={3}> */}
-                <Form.Label>First Name</Form.Label>
-                <Form.Control type="text" placeholder="Add First Name" />
-                {/* </Col> */}
-            </Form.Group>
-            <Form.Group>
-                {/* <Col xs={3}> */}
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control type="text" placeholder="Add Last Name" />
-                {/* </Col> */}
-            </Form.Group>
-            <Button type="submit" >Apply</Button>
-            <Link to='/user-dashboard'><Button variant="secondary" >Go Back</Button></Link>
+            
+            <Button className="mt-2 ml-2 mr-2" type="button" onClick={onButtonClick}>Apply</Button>
+            <Link  to='/user-dashboard'><Button className="mt-2 ml-2 mr-2" variant="secondary" >Go Back</Button></Link>
 
         </Form>
         </div>

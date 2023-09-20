@@ -14,6 +14,7 @@ import LoanApplyForm from './components/LoanApplyForm';
 import LoanNavBar from './components/navBar';
 import EditUser from './components/editUser';
 import { UserProvider } from './components/userContext';
+import ItemPurchased from './components/itemPurchased';
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
         <Route path='/user-dashboard' element={<Userdashboard/>} />
         <Route path='/view-loan' element={<Viewloan/>}/>
         < Route path='/apply-loan' element={<LoanApplyForm/>}/>
+        <Route path = "/items-purchased" element={<ItemPurchased/>}/>
       </Routes> 
       
     </div>
