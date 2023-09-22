@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import  Button  from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import {useState, useEffect} from 'react'
@@ -10,6 +10,7 @@ const LoanManagement=()=>{
         setLoan(!addLoan)
         console.log(addLoan)
     }
+    const navigate=useNavigate()
     
     const displayData=async()=>{
         try{
@@ -60,7 +61,10 @@ const LoanManagement=()=>{
         }
 
     }
-
+    const onEdit =async(e)=>{
+        const loanId=e.target.parentNode.id
+        navigate('/edit-loan?id='+loanId) 
+    }
 
     const onDelete=async(e)=>{
         const loanId=e.target.parentNode.id
@@ -117,6 +121,7 @@ const LoanManagement=()=>{
                             {/* <td>{loan.item.length}</td> */}
                             <td id={loanData.loan.loanId}><Button id="YES" variant="link" disabled={loanData.loan.status==="YES"?true:false} onClick={onApprove}>{loanData.loan.status==="YES"?'Approved':'Approve'}</Button></td>
                             <td id={loanData.loan.loanId}><Button id="NO" variant="link" disabled={loanData.loan.status==="NO"?true:false} onClick={onApprove}>{loanData.loan.status==="NO"?'Rejected':'Reject'}</Button></td>
+                            <td id={loanData.loan.loanId}><Button variant="link" onClick={onEdit}>Edit</Button></td>
                             <td id={loanData.loan.loanId}><Button variant="link" onClick={onDelete}>Delete</Button></td>
 
                         </tr>

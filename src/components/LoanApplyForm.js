@@ -1,17 +1,19 @@
 import {useState, useEffect, useContext} from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { Col } from 'react-bootstrap'
 import { UserContext } from './userContext'
 
-const LoanApplyForm = () =>{
+const LoanApplyForm = (loanId) =>{
 
     const [loanType,setLoanType] = useState("");
     const options = ["CAR","FURNITURE","EDUCATION","HOME","MEDICAL","ACCIDENT","PROPERTY"]
     const [loanduration,setLoanDuration] = useState("");
+    const [status,setStatus]=useState("")
     // const {userId} = useContext(UserContext);
     const userId=localStorage.getItem('userId')
+    const navigate=useNavigate()
     const registerLoan = async () => {
 
         const dataToSend = {
@@ -32,11 +34,76 @@ const LoanApplyForm = () =>{
         const reply = await response.text();
     }
 
-    const onButtonClick = () => {
+
+    const updateLoan= async(loan)=>{
+        
+        console.log(loan)
+        try{
+            const res= await fetch('http://localhost:8082/loanapp/loan/'+loanId.loanId+'/update',{
+                method:'PUT',
+                body:JSON.stringify(loan),
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+           
+            console.log(res)
+            // const data = await res.text();
+            if(res.ok ===  true){
+                alert("Loan has been Updated")
+                navigate('/loan-management')
+            }
+            else{
+                alert("loan could not be updated")
+            }
+
+        }
+        catch(e){
+            console.log(e)
+            // setRegistrationError(e)
+            // console.log(registrationError)
+            
+        }
+    }
+
+    const onButtonClick = (e) => {
+        e.preventDefault()
+        if(loanId.loanId)
+        updateLoan({loanType,'loanDuration':parseInt(loanduration),status})
+        else
         registerLoan();
         setLoanType('');
-        setLoanDuration(null);
+        setLoanDuration('');
     }
+    useEffect(()=>{
+        const displayData=async()=>{
+            try{
+                const url="http://localhost:8082/loanapp/display/loan/all"
+                let options={
+                    method:'GET'
+                }
+                const res=await fetch(url,options)
+                const data=await res.json()
+                console.log(loanId)
+                const desiredLoan=data.find((el)=>el.loan.loanId==loanId.loanId)
+                console.log(desiredLoan)
+                // setUserValues(desiredUser)
+                console.log(data)
+                setLoanType(desiredLoan.loan.loanType)
+                setLoanDuration(desiredLoan.loan.loanDuration)
+                setStatus(desiredLoan.loan.status)
+            }
+            catch(e){
+                console.log(e)
+            }
+            
+        }
+        if(loanId.loanId){
+            console.log("lol")
+            displayData()
+            // console.log(userValues)
+        }
+    },[]) 
     
     return(
        <div style={{
@@ -69,11 +136,11 @@ const LoanApplyForm = () =>{
             <Form.Group>
                 {/* <Col xs={3}> */}
                 <Form.Label>Loan Duration</Form.Label>
-                <Form.Control type="text" placeholder="Add a Loan Duration" onChange = {(event) => {setLoanDuration(event.target.value)}} />
+                <Form.Control type="text" placeholder="Add a Loan Duration" value={loanduration} onChange = {(event) => {setLoanDuration(event.target.value)}} />
                 {/* </Col> */}
             </Form.Group>
             
-            <Button className="mt-2 ml-2 mr-2" type="submit" onClick={onButtonClick}>Apply</Button>
+            <Button className="mt-2 ml-2 mr-2" type="submit" onClick={onButtonClick}>{loanId.loanId?'Update':'Apply'}</Button>
             <Link  to='/user-dashboard'><Button className="mt-2 ml-2 mr-2" variant="secondary" >Go Back</Button></Link>
 
         </Form>

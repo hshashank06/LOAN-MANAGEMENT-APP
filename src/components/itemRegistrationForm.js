@@ -10,12 +10,6 @@ const ItemForm = ({onRegister,itemId}) =>{
     const [itemType,setItemType]=useState('')
     const [loanId,setLoanId]=useState('')
 
-    const [firstName,setFirstName]=useState('')
-    const [dob,setdob] = useState('');
-    const [lastName,setLastName]=useState('')
-    const [email,setEmail]=useState('')
-    const [age,setAge]=useState('')
-    const [password,setPassword]=useState('')
     const [errorValues,setErrorValues]=useState({})
     const [submit,setSubmit]=useState(false)
     const [registrationError,setRegistrationError]=useState({})
@@ -121,14 +115,14 @@ const ItemForm = ({onRegister,itemId}) =>{
             displayData()
             // console.log(userValues)
         }
-    },[])
+    },[]) 
 
     useEffect(()=>{
         if(Object.keys(errorValues).length===0 && submit){  
-            if(!loanId)
+            if(!itemId)
                 registerItem({description,issueStatus,itemMake,itemType,itemValue,loanId})
             else
-                updateItem({description,issueStatus,itemMake,itemType})
+                updateItem({description,issueStatus,itemMake,itemType,'itemValue':parseInt(itemValue)})
             }
     },[errorValues])
 
