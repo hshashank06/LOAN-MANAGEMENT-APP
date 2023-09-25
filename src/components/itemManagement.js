@@ -95,6 +95,8 @@ const LoanManagement=()=>{
     
     return(
         <div>
+            <h2 className='sub-heading admin-heading'>Item Management</h2>
+
             <Button variant="secondary" id="register-button" onClick={handleClick}>{addLoan?'Show All Items': 'Register Items'}</Button>
             <>
             {addLoan && <ItemForm onRegister={displayData}/>}

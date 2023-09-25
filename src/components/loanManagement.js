@@ -94,10 +94,12 @@ const LoanManagement=()=>{
     
     return(
         <div>
-            <Button variant="secondary" id="register-button" onClick={handleClick}>{addLoan?'Show All Loans': 'Apply Loans'}</Button>
+            <h2 className='sub-heading admin-heading'>Loan Management</h2>
+
+            {/* <Button variant="secondary" id="register-button" onClick={handleClick}>{addLoan?'Show All Loans': 'Apply Loans'}</Button>
             <>
             {addLoan && <RegistrationForm onRegister={()=>{}}/>}
-            </>
+            </> */}
             {!addLoan && <Table striped bordered hover>
             <thead>
                 <tr>

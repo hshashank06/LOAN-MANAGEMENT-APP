@@ -47,8 +47,9 @@ const Viewloan=()=>{
         }
     ]
     return(
-        <div>
+        <div className='view-loan' >
             <Link to='/view-loan'> </Link>
+            <h2 className='sub-heading'>Loans Applied</h2>
             <Table striped bordered hover>
             <thead>
                 <tr>
@@ -68,7 +69,7 @@ const Viewloan=()=>{
                             <td>{loan.loanId}</td>
                             <td>{loan.loanType}</td>
                             <td>{loan.loanDuration}</td>
-                            <td>{loan.status}</td>
+                            <td className={loan.status==="YES"?'pass':'fail'}>{loan.status}</td>
                             
                         </tr>
                     ))

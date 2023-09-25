@@ -50,10 +50,16 @@ function Login(){
                 if(!adminLogin){
                     console.log(userId)
                     localStorage.setItem('userId',userId)
+                    localStorage.setItem('adminId','')
+
                 navigate('/user-dashboard')
                 }
-                else
-                navigate('/admin-dashboard')
+                else{
+                    localStorage.setItem('userId','')
+                    localStorage.setItem('adminId',userId)
+                    navigate('/admin-dashboard')
+                }
+               
             }
             else{
                 alert("LOGIN COULD NOT BE DONE")
@@ -75,9 +81,12 @@ function Login(){
             width: "100vw",
             height: "50vh"
         }}>
-            <div className="title"> <h2>User Login</h2>
+            <div className="title"> <h2 className=" sub-heading">User Login</h2>
            </div> 
-            <Form>
+            <Form style={{
+                margin:"auto",
+                width:"30vw"
+            }}>
                <Form.Group> <Form.Label >User ID </Form.Label><Form.Control type ="text" value = {userId} placeholder="Enter User Id"  onChange={(e)=>setUserId(e.target.value)}/>
                </Form.Group>
                <Form.Group><Form.Label htmlFor="password">Password</Form.Label><Form.Control type ="password" value = {userPassword} placeholder="Enter Password"  onChange={(e)=>setUserPassword(e.target.value)}/></Form.Group>

@@ -9,11 +9,41 @@ const ItemForm = ({onRegister,itemId}) =>{
     const [itemValue,setItemValue]=useState('')
     const [itemType,setItemType]=useState('')
     const [loanId,setLoanId]=useState('')
-
+    const [loanIdOptions,setLoanIdOptions]=useState([])
     const [errorValues,setErrorValues]=useState({})
     const [submit,setSubmit]=useState(false)
     const [registrationError,setRegistrationError]=useState({})
-
+    let approvedLoans=[]
+    useEffect(()=>{
+        const getApprovedLoans=async()=>{
+            try{
+                const url="http://localhost:8082/loanapp/display/loan/all"
+                let options={
+                    method:'GET'
+                }
+                const res=await fetch(url,options)
+                const data=await res.json()
+                approvedLoans=data.filter((el)=>el.loan.status==='YES')
+                console.log(approvedLoans)
+                let approvedLoanIds=[]
+                approvedLoans.forEach((el)=>{
+                    approvedLoanIds.push(el.loan.loanId)
+                })
+                console.log(approvedLoanIds)
+                setLoanIdOptions(approvedLoanIds)
+                // setUserValues(desiredUser)
+                
+            }
+            catch(e){
+                console.log(e)
+            }
+            
+        }
+        
+            getApprovedLoans()
+            // c
+    },[]) 
+    
     const registerItem= async(item)=>{
         console.log(item)
         try{
@@ -148,8 +178,9 @@ const ItemForm = ({onRegister,itemId}) =>{
         if(!val.itemValue){
             errors.itemValue='Value is required!'
         }
-        if(!val.loanId){
-            errors.loanId='Loan Id is required!'
+        console.log(loanIdOptions)
+        if(!itemId && loanIdOptions.indexOf(parseInt(val.loanId))===-1){
+            errors.loanId='Select an approved loan from the drop-down!'
         }
         
         return errors
@@ -205,7 +236,14 @@ const ItemForm = ({onRegister,itemId}) =>{
             
             <Form.Group>
                 <Form.Label>Loan Id</Form.Label>
-                <Form.Control type="number" placeholder="Enter an approved Loan Id" value={loanId} onChange={(e)=>setLoanId(e.target.value)}/>
+                <Form.Control as="select" placeholder="Enter an approved Loan Id" value={loanId} onChange={(e)=>setLoanId(e.target.value)}>
+                <option value = "">Choose an approved loan</option>
+                {
+                loanIdOptions  && loanIdOptions.map((opt)=>(
+                    <option key={opt} value= {opt}>{opt}</option>
+                    ))
+                }   
+                </Form.Control>
                 <p className='form-error'>{errorValues.loanId}</p>
             </Form.Group>
             <Button type="submit" >{itemId?'Update':'Register'}</Button>

@@ -65,6 +65,7 @@ const CustomerManagement=()=>{
 
     return(
         <div>
+            <h2 className='sub-heading admin-heading'>Customer Management</h2>
             <Button variant="secondary" id="register-button" onClick={handleClick}>{register?'Show All Users': 'Register User'}</Button>
             <>
             {register && <RegistrationForm onRegister={displayData}/>}

@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 const AdminDashboard=()=>{
     return(
         <div className='admin-dashboard'>
-            <h2>Admin Dashboard</h2>
+            <h1 className='sub-heading'>Admin Dashboard</h1>
             <div>
                 <Link to="/customer"><Button className='dashboard-btn'>Customer Data Management</Button></Link>
                 <Link to="/loan-management"><Button className='dashboard-btn'>Loan Card Management</Button></Link>

@@ -36,6 +36,7 @@ const ItemPurchased = () => {
 
     return (
         <>
+        <h2 className='sub-heading'>Items Purchased</h2>
         <Table striped bordered hover>
             <thead>
                 <tr>

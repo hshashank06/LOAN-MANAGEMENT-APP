@@ -114,6 +114,7 @@ const LoanApplyForm = (loanId) =>{
         justifyContent:"center",
         
     }}> <Link to='/apply-loan' ></Link> 
+        <h2 className='sub-heading'>Loan Apply Form</h2>
         <Form className="loan-form" >
             <Form.Group>
                 
