@@ -18,6 +18,7 @@ import { UserProvider } from './components/userContext';
 import ItemPurchased from './components/itemPurchased';
 import EditItem from './components/editItem';
 import EditLoan from './components/editLoan';
+import Footer from './components/Footer';
 
 function App() {
 
@@ -56,6 +57,7 @@ function App() {
       </Routes> 
       
     </div>
+    <Footer/>
     </Router>
     </UserProvider>
     
