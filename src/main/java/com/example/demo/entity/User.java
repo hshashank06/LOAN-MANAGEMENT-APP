@@ -1,10 +1,13 @@
 package com.example.demo.entity;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,7 +27,7 @@ import jakarta.validation.constraints.Size;
 		
 
 @Entity
-public class User {
+public class User implements UserDetails {
 	
 	@Column(name = "FirstName",nullable=false,columnDefinition="TEXT")
 	@NotNull(message = "First Name cannot be null")
@@ -43,7 +46,7 @@ public class User {
 	@Column(name = "Email",nullable=false,columnDefinition="TEXT")
 	@Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
 	@NotEmpty(message = "Email cannot be empty")
-	private String userEmail;
+	private String email;
 	
 	@Column(name = "Age",nullable=false)
 	@Min(value = 18, message="User Age cannot be Less than 18 for Loan Account")
@@ -56,7 +59,7 @@ public class User {
 	
 	@Column(name = "Password",nullable=false,columnDefinition="TEXT")
 	@NotEmpty(message = "Password cannot be empty")
-	@Size(min = 8, max = 20)
+	
 	private String userPassword;
 		
 	
@@ -83,7 +86,7 @@ public class User {
 	this.firstName = firstName;
 	this.lastName = lastName;
 	this.userId = userId;
-	this.userEmail = userEmail;
+	this.email = userEmail;
 	this.userAge = userAge;
 	this.userdob = userdob;
 	this.userPassword = userPassword;
@@ -118,10 +121,10 @@ public class User {
 		this.userId = userId;
 	}
 	public String getUserEmail() {
-		return userEmail;
+		return email;
 	}
 	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
+		this.email = userEmail;
 	}
 	public Integer getUserAge() {	
 		return Period.between(userdob,LocalDate.now()).getYears();
@@ -146,6 +149,41 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [firstName=" + firstName + ", lastName=" + lastName + ", userId=" + userId + ", userEmail="
-				+ userEmail + ", userAge=" + userAge + ", userdob=" + userdob + ", userPassword=" + userPassword + "]";
+				+ email + ", userAge=" + userAge + ", userdob=" + userdob + ", userPassword=" + userPassword + "]";
+	}
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return this.userPassword;
+	}
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return this.email;
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

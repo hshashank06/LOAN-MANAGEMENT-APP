@@ -7,6 +7,14 @@ import java.util.Map;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -19,9 +27,9 @@ import com.example.demo.repository.UserRepo;
 import jakarta.transaction.Transactional;
 
 
-
+@Configuration
 @Service
-public class CustomerService {
+public class CustomerService implements UserDetailsService {
 	
 	@Autowired
 	UserRepo userRepo;
@@ -31,7 +39,8 @@ public class CustomerService {
 	ItemRepo itemRepo;
 	@Autowired
 	LoanRepo loanRepo;
-	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	public CustomerService(UserRepo userRepo,AdminRepo adminRepo,ItemRepo itemRepo,LoanRepo loanRepo) {
 		this.userRepo = userRepo;
@@ -55,13 +64,13 @@ public class CustomerService {
 		else return false;
 	}
 	public Boolean checkAddNewUser(User user) {
+		user.setUserPassword(passwordEncoder.encode(user.getPassword()));
+		System.out.println("Add");
 		userRepo.save(user);
-		if(userRepo.existsByUserId(user.getUserId())) {
+		
 			return true;
 
-	}else {
-			return false;
-		}
+	
 	}
 	
 	public List<User> getAllUsers(){
@@ -113,6 +122,16 @@ public class CustomerService {
 				
 			}
 	}
+
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		User user=userRepo.findByEmail(username).orElseThrow(() -> new RuntimeException("User not Found!!"));
+		
+		return user;
+	}
+	
 
 	
 }

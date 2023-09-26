@@ -11,9 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,17 +33,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Admin;
 import com.example.demo.entity.Item;
+import com.example.demo.entity.JwtRequest;
+import com.example.demo.entity.JwtResponse;
 import com.example.demo.entity.User;
 import com.example.demo.service.CustomerService;
 import jakarta.validation.Valid;
+import com.example.demo.security.JwtHelper;
+
 
 
 @RestController
 @RequestMapping(value = "/loanapp")
 public class CustomerController {
 	
+	  @Autowired
+	    private UserDetailsService userDetailsService;
+
+	    @Autowired
+	    private AuthenticationManager manager;
+
+
+	    @Autowired
+	    private JwtHelper helper;
+@Autowired
+PasswordEncoder passwordEncoder;
+	
+
 	@Autowired
 	CustomerService customerService;
+  
 	
 	
 	Logger logger = Logger.getLogger(CustomerController.class.getName());
@@ -69,7 +96,9 @@ public class CustomerController {
 	@ResponseBody
 	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<String> registerNewUserIntoBackEnd(@RequestBody @Valid User user){
+		
 		Boolean result = customerService.checkAddNewUser(user);
+		
 		if(result) {
 			return ResponseEntity.status(HttpStatus.OK).body("NEW USER REGISTERED");
 		}
@@ -110,8 +139,61 @@ public class CustomerController {
 		
 		
 	}
+	@GetMapping("/admin/adminProfile")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String adminProfile() {
+        return "Welcome to Admin Profile";
+    }
+	
+  
+
+	  
+
+	@PostMapping("/login")
+	@ResponseBody
+	@CrossOrigin(origins = "http://localhost:3000")     
+	    public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
+             System.out.println("hi");
+	        this.doAuthenticate(request.getEmail(), request.getPassword());
+	      
+	        System.out.println("authentication");
+	        
+	        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+	        System.out.println(userDetails);
+	        String token = this.helper.generateToken(userDetails);
+
+	        JwtResponse response = JwtResponse.builder()
+	                .jwtToken(token)
+	                .username(userDetails.getUsername()).build();
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	 }
+    private void doAuthenticate(String email, String password) {
+
+       
+    	UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
+        System.out.println(authenticationToken);
+    	try {
+        	
+            manager.authenticate(authenticationToken);
+            
+
+        } catch (BadCredentialsException e) {
+        	System.out.println(e);
+            throw new BadCredentialsException(" Invalid Username or Password  !!");
+        }
+
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public String exceptionHandler() {
+        return "Credentials Invalid !!";
+    }
+
+}
+  
+
 			
-	}
+	
 	
 	
 	
