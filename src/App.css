@@ -1,11 +1,23 @@
 .App {
   text-align: center;
   /* background-color: black; */
+  /* background-image: url("https://wallpaperaccess.com/full/1104823.jpg");
+  background-size: cover; */
+  height: 100vh;
+  width: 100vw;
+  margin-bottom: 50px;;
+/* color: aliceblue; */
+}
+
+.bg-page{
   background-image: url("https://wallpaperaccess.com/full/1104823.jpg");
   background-size: cover;
   height: 100vh;
   width: 100vw;
 color: aliceblue;
+}
+.bg-heading{
+  color:white !important;
 }
 
 .App-logo {
@@ -49,8 +61,14 @@ color: aliceblue;
   left:68%;
 }
 .admin-dashboard{
-  margin: 3%;
-  margin-top: 1%;
+  padding: 3%;
+  padding-top: 1%;
+}
+.admin-cards{
+  display:flex;
+  margin: auto !important;
+  justify-content: center;
+  margin-top: 30px !important;
 }
 .dashboard-btn{
   margin:1%;
@@ -126,7 +144,7 @@ color: aliceblue;
 .sub-heading{
   margin:20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color:white;
+  color:rgb(36, 35, 35);
   font-weight: bold;
 }
 @keyframes App-logo-spin {

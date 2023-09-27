@@ -106,7 +106,7 @@ const LoanManagement=()=>{
                 <th>#</th>
                 <th>Loan Id</th>
                 <th>Loan Type</th>
-                <th>Loan Duration</th>
+                <th>Duration (years)</th>
                 <th>User</th>
                 {/* <th>Items</th> */}
                 </tr>

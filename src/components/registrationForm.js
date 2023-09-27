@@ -2,16 +2,23 @@ import {useState, useEffect} from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import {Link} from 'react-router-dom'
+import PopupModal from './popupModal'
 const RegistrationForm = ({onRegister,userId}) =>{
     const [firstName,setFirstName]=useState('')
     const [dob,setdob] = useState('');
     const [lastName,setLastName]=useState('')
     const [email,setEmail]=useState('')
-    const [age,setAge]=useState('')
     const [password,setPassword]=useState('')
     const [errorValues,setErrorValues]=useState({})
     const [submit,setSubmit]=useState(false)
     const [registrationError,setRegistrationError]=useState({})
+    const [show, setShow] = useState(false);
+    const [popupHeading,setHeading]=useState('')
+    const [popupBody,setBody]=useState('')
+    
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const registerUser= async(user)=>{
         console.log(user)
@@ -27,11 +34,17 @@ const RegistrationForm = ({onRegister,userId}) =>{
 
             const data = await res.text();
             if(data === "NEW USER REGISTERED"){
-                alert("New User has been Registered")
+                // alert("New User has been Registered")
+                setHeading('Registration Successful!!')
+                setBody('User has been registered!')
+                setShow(true)
                 await onRegister()
             }
             else if(data === "NEW USER COULLD NOT BE ADDED"){
-                alert("User could not be registered")
+                setHeading('Registration failed!!')
+                setBody('Please check the data entered again!')
+                setShow(true)
+                // alert("User could not be registered")
             }
 
         }
@@ -39,6 +52,9 @@ const RegistrationForm = ({onRegister,userId}) =>{
             // console.log(e)
             setRegistrationError(e)
             console.log(registrationError)
+            setHeading('Registration failed!!')
+            setBody('Please check the data entered again!')
+            setShow(true)
             
         }
     }
@@ -59,11 +75,15 @@ const RegistrationForm = ({onRegister,userId}) =>{
 
             const data = await res.text();
             if(data === "The Fields have been updated"){
-                alert("User has been Updated")
+                setHeading('Update Successful!!')
+                setBody('User has been updated!')
+                setShow(true)
                 await onRegister()
             }
             else{
-                alert("User could not be updated")
+                setHeading('Update failed!!')
+            setBody('Please check the data entered again!')
+            setShow(true)
             }
 
         }
@@ -71,6 +91,9 @@ const RegistrationForm = ({onRegister,userId}) =>{
             // console.log(e)
             setRegistrationError(e)
             console.log(registrationError)
+            setHeading('Update failed!!')
+            setBody('Please check the data entered again!')
+            setShow(true)
             
         }
     }
@@ -78,7 +101,7 @@ const RegistrationForm = ({onRegister,userId}) =>{
     const onSubmit=(e)=>{
         e.preventDefault()
         setErrorValues(checkValues({
-            firstName,lastName,email,age,password
+            firstName,lastName,email,dob,password
         }))
         setSubmit(true)
     }
@@ -100,7 +123,6 @@ const RegistrationForm = ({onRegister,userId}) =>{
                 setLastName(desiredUser.lastName)
                 setEmail(desiredUser.userEmail)
                 setPassword(desiredUser.userPassword)
-                setAge(desiredUser.userAge)
                 setdob(desiredUser.userdob)
             }
             catch(e){
@@ -118,9 +140,9 @@ const RegistrationForm = ({onRegister,userId}) =>{
     useEffect(()=>{
         if(Object.keys(errorValues).length===0 && submit){  
             if(!userId)
-                registerUser({firstName,lastName,"userEmail":email,"userAge":age,"userdob":dob,"userPassword":password})
+                registerUser({firstName,lastName,"userEmail":email,"userAge":19,"userdob":dob,"userPassword":password})
             else
-                updateUser({firstName,lastName,"userEmail":email})
+                updateUser({firstName,lastName,"userEmail":email,"userdob":dob})
             }
     },[errorValues])
 
@@ -145,11 +167,22 @@ const RegistrationForm = ({onRegister,userId}) =>{
         else if(val.password.length<8 || val.password.length>16){
             errors.password='Password must have atleast 8 characters and atmost 16!'
         }
-        if(!val.age){
-            errors.age='Age is required!'
+        console.log(val.dob)
+
+        var bday=dob.split("-");
+        console.log(bday)
+        var bday_in_milliseconds = new Date(parseInt(bday[0], 10), parseInt(bday[1], 10) - 1 , parseInt(bday[2]), 10).getTime(); //birth-date in milliseconds
+        var now = new Date().getTime(); 
+        var adult=false
+        if(now - bday_in_milliseconds >= 567648000000){ 
+            adult=true
         }
-        else if(val.age<18){
-            errors.age='You must be 18 years or above to register!'
+        
+        if(!val.dob){
+            errors.dob='Date of Birth is required!'
+        }
+        else if(adult===false){
+            errors.dob='You should be atleast 18 years old to register!'
         }
         return errors
     }
@@ -157,6 +190,9 @@ const RegistrationForm = ({onRegister,userId}) =>{
 
 
     return(
+        <div>
+            
+            <PopupModal show={show} heading={popupHeading} body={popupBody} handleClose={handleClose}/>
         <Form className="reg-form" onSubmit={onSubmit}>
             <Form.Group>
                 <Form.Label>First Name</Form.Label>
@@ -173,14 +209,11 @@ const RegistrationForm = ({onRegister,userId}) =>{
                 <Form.Control type="text" placeholder="Add Email Id" value={email} onChange={(e)=>setEmail(e.target.value)}/>
                 <p className='form-error'>{errorValues.email}</p>
             </Form.Group>
-            <Form.Group>
-                <Form.Label>Age</Form.Label>
-                <Form.Control type="number" placeholder="Add Age" value={age} onChange={(e)=>setAge(e.target.value)}/>
-                <p className='form-error'>{errorValues.age}</p>
-            </Form.Group>
+            
             <Form.Group>
                 <Form.Label>Date Of Birth</Form.Label>
                 <Form.Control type="date" value={dob} onChange={(e)=>setdob(e.target.value)}/>
+                <p className='form-error'>{errorValues.dob}</p>
             </Form.Group>
             
             <Form.Group>
@@ -192,6 +225,7 @@ const RegistrationForm = ({onRegister,userId}) =>{
             <Link to='/admin-dashboard'><Button variant="secondary" className="go-back">DashBoard</Button></Link>
 
         </Form>
+        </div>
     )
 }
 

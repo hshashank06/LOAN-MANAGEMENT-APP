@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form'
 import {Link, useNavigate} from 'react-router-dom'
 import { Col } from 'react-bootstrap'
 import { UserContext } from './userContext'
+import Modal from 'react-bootstrap/Modal'
+import PopupModal from './popupModal'
 
 const LoanApplyForm = (loanId) =>{
 
@@ -11,6 +13,13 @@ const LoanApplyForm = (loanId) =>{
     const options = ["CAR","FURNITURE","EDUCATION","HOME","MEDICAL","ACCIDENT","PROPERTY"]
     const [loanduration,setLoanDuration] = useState("");
     const [status,setStatus]=useState("")
+    const [show, setShow] = useState(false);
+    const [popupHeading,setHeading]=useState('')
+    const [popupBody,setBody]=useState('')
+    
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     // const {userId} = useContext(UserContext);
     const userId=localStorage.getItem('userId')
     const navigate=useNavigate()
@@ -29,9 +38,27 @@ const LoanApplyForm = (loanId) =>{
             },
             body:JSON.stringify(dataToSend)
         }
-
-        const response = await fetch(url,options);
-        const reply = await response.text();
+        try{
+            const response = await fetch(url,options);
+            const reply = await response.text();
+            console.log(reply)
+            if(reply ==="NEW Loan REGISTERED"){
+                setHeading('Success !!')
+                setBody('Loan has been submitted for admin approval')
+                setShow(true)
+            }
+            else{
+                setHeading('Loan Application Failed!!')
+                setBody('Please enter all the details correctly!')
+                setShow(true)
+            }
+        }
+        catch(e){
+            setHeading('Loan Application Failed!!')
+            setBody('Please enter correct details!')
+            setShow(true)
+        }
+        
     }
 
 
@@ -50,7 +77,9 @@ const LoanApplyForm = (loanId) =>{
             console.log(res)
             // const data = await res.text();
             if(res.ok ===  true){
-                alert("Loan has been Updated")
+                setHeading('Success !!')
+                setBody('Loan has been updated')
+                setShow(true)
                 navigate('/loan-management')
             }
             else{
@@ -115,6 +144,7 @@ const LoanApplyForm = (loanId) =>{
         
     }}> <Link to='/apply-loan' ></Link> 
         <h2 className='sub-heading'>Loan Apply Form</h2>
+        <PopupModal show={show} heading={popupHeading} body={popupBody} handleClose={handleClose}/>
         <Form className="loan-form" >
             <Form.Group>
                 

@@ -23,16 +23,17 @@ function Userdashboard()
         navigate("/items-purchased")
     }
     return(
-        <>
+        <div className="bg-page">
         <div style={{
            
            
             alignItems:"center",
             justifyContent:"center",
             width: "50w",
-            height: "50h"
+            height: "50h",
+            padding: "20px"
         }}>
-            <h1 className="sub-heading">User Dashboard</h1>
+            <h1 className="sub-heading bg-heading">User Dashboard</h1>
             <div style={{margin : "50px"}} >  </div>
 
             <div className="user-dashboard">
@@ -75,7 +76,7 @@ function Userdashboard()
              
             
         </div>
-        </>
+        </div>
     );
 }
 export default Userdashboard;

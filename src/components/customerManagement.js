@@ -78,6 +78,7 @@ const CustomerManagement=()=>{
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Age</th>
+                <th>Date of Birth</th>
                 <th>Email Id</th>
                 </tr>
             </thead>
@@ -90,6 +91,7 @@ const CustomerManagement=()=>{
                             <td>{user.firstName}</td>
                             <td>{user.lastName}</td>
                             <td>{user.userAge}</td>
+                            <td>{user.userdob}</td>
                             <td>{user.userEmail}</td>
                             <td id={user.userId}><Button variant="link" onClick={onEdit}>Edit</Button></td>
                             <td id={user.userId}><Button variant="link" onClick={onDelete}>Delete</Button></td>

@@ -2,14 +2,25 @@ import React, { useContext } from "react";
 import {useState, useEffect} from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
+import  Modal  from "react-bootstrap/Modal";
 import {useNavigate} from 'react-router-dom'
 import { UserContext, useUser } from "./userContext";
+import PopupModal from "./popupModal";
+
 function Login(){
 
 
     const {userId,setUserId}= useContext(UserContext);
     const [userPassword,setUserPassword] = useState();
     const [isAdmin,setAdmin]=useState(false)
+    const [show, setShow] = useState(false);
+    const [popupHeading,setHeading]=useState('')
+    const [popupBody,setBody]=useState('')
+    
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const navigate=useNavigate()
 
     const loginUser= async (e)=>{
@@ -62,17 +73,23 @@ function Login(){
                
             }
             else{
-                alert("LOGIN COULD NOT BE DONE")
+                setHeading('Login Failed!!')
+                setBody('Incorrect login Id or password!')
+                setShow(true)
             }
         }
         catch(e){
             // console.log(e)
+            setHeading('Error!!')
+            setBody('Login could not be completed!')
+            setShow(true)
             console.log(e)
         }
     }
 
    
     return(
+        <div className="bg-page">
         <div style={{
             display:"flex",
             flexDirection: "column",
@@ -81,8 +98,9 @@ function Login(){
             width: "100vw",
             height: "50vh"
         }}>
-            <div className="title"> <h2 className=" sub-heading">User Login</h2>
+            <div className="title"> <h2 className=" sub-heading bg-heading">User Login</h2>
            </div> 
+           <PopupModal show={show} heading={popupHeading} body={popupBody} handleClose={handleClose}/>
             <Form style={{
                 margin:"auto",
                 width:"30vw"
@@ -95,6 +113,7 @@ function Login(){
 
             </Form>
             
+        </div>
         </div>
     );
 }

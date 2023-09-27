@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import {Link} from 'react-router-dom'
+import PopupModal from './popupModal'
 const ItemForm = ({onRegister,itemId}) =>{
     const [description,setDescription]=useState('')
     const [issueStatus,setIssueStatus]=useState('')
@@ -13,6 +14,14 @@ const ItemForm = ({onRegister,itemId}) =>{
     const [errorValues,setErrorValues]=useState({})
     const [submit,setSubmit]=useState(false)
     const [registrationError,setRegistrationError]=useState({})
+    const [show, setShow] = useState(false);
+    const [popupHeading,setHeading]=useState('')
+    const [popupBody,setBody]=useState('')
+    
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     let approvedLoans=[]
     useEffect(()=>{
         const getApprovedLoans=async()=>{
@@ -58,11 +67,15 @@ const ItemForm = ({onRegister,itemId}) =>{
 
             const data = await res.text();
             if(data === "True"){
-                alert("True")
+                setHeading('Success !!')
+                setBody('Item has been registered')
+                setShow(true)
                 await onRegister()
             }
             else if(data === "False"){
-                alert("User could not be registered")
+                setHeading('Failed !!')
+                setBody('Please check the data entered and retry')
+                setShow(true)
             }
 
         }
@@ -70,6 +83,9 @@ const ItemForm = ({onRegister,itemId}) =>{
             // console.log(e)
             setRegistrationError(e)
             console.log(registrationError)
+            setHeading('Failed !!')
+                setBody('Please check the data entered and retry')
+                setShow(true)
             
         }
     }
@@ -90,11 +106,15 @@ const ItemForm = ({onRegister,itemId}) =>{
 
             const data = await res.text();
             if(data === "Item fields updated"){
-                alert("Item has been Updated")
+                setHeading('Success !!')
+                setBody('Item has been updated')
+                setShow(true)
                 await onRegister()
             }
             else{
-                alert("Item could not be updated")
+                setHeading('Failed !!')
+                setBody('Item could not be updated')
+                setShow(true)
             }
 
         }
@@ -102,6 +122,9 @@ const ItemForm = ({onRegister,itemId}) =>{
             // console.log(e)
             setRegistrationError(e)
             console.log(registrationError)
+            setHeading('Failed !!')
+                setBody('Item could not be updated')
+                setShow(true)
             
         }
     }
@@ -189,6 +212,9 @@ const ItemForm = ({onRegister,itemId}) =>{
 
 
     return(
+        <div>
+            <PopupModal show={show} heading={popupHeading} body={popupBody} handleClose={handleClose}/>
+        
         <Form className="reg-form" onSubmit={onSubmit}>
             <Form.Group>
                 <Form.Label>Description</Form.Label>
@@ -250,6 +276,7 @@ const ItemForm = ({onRegister,itemId}) =>{
             <Link to='/admin-dashboard'><Button variant="secondary" className="go-back">DashBoard</Button></Link>
 
         </Form>
+        </div>
     )
 }
 
