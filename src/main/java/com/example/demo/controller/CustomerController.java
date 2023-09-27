@@ -98,6 +98,7 @@ PasswordEncoder passwordEncoder;
 	ResponseEntity<String> registerNewUserIntoBackEnd(@RequestBody @Valid User user){
 		
 		Boolean result = customerService.checkAddNewUser(user);
+		System.out.println(result);
 		
 		if(result) {
 			return ResponseEntity.status(HttpStatus.OK).body("NEW USER REGISTERED");
@@ -123,6 +124,7 @@ PasswordEncoder passwordEncoder;
 	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<Boolean> deleteUserById(@RequestBody User user){
 		Boolean result = customerService.deleteUserById(user.getUserId());
+		System.out.println("Hr" + result);
 		if(result == true)
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
@@ -133,7 +135,6 @@ PasswordEncoder passwordEncoder;
 	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<String> updateTheFields(@PathVariable Long id,@RequestBody Map<String, Object> updates){
 		
-		System.out.println("Hi");
 			customerService.updateFields(id, updates);
 			return ResponseEntity.ok("The Fields have been updated");
 		

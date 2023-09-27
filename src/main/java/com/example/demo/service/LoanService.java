@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class LoanService {
 	@Autowired
 	UserRepo userRepo;
 	
-	
+	final Logger logger = Logger.getLogger(LoanService.class.getName());
 	
 	public LoanService(LoanRepo loanRepo) {
 		this.loanRepo = loanRepo;
@@ -90,8 +91,14 @@ public class LoanService {
 	 }
 	 
 	 public Boolean deleteLoan(Long loanId) {
+		 try {
 		 loanRepo.deleteById(loanId);
 		 return true;
+		 }
+		 catch(Exception e) {
+			 logger.info("Could not Delete the give loanId");
+			 return false;
+		 }
 	 }
 	
 	

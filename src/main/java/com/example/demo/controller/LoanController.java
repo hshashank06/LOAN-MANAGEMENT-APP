@@ -81,8 +81,11 @@ public class LoanController {
 	@ResponseBody
 	@PostMapping("/delete/loan/{loanId}")
 	ResponseEntity<String> deleteLoan(@PathVariable("loanId") Long loanId){
-		loanService.deleteLoan(loanId);
+		Boolean result = loanService.deleteLoan(loanId);
+		if(result)
 		return ResponseEntity.ok("REMOVED");
+		else
+			return ResponseEntity.badRequest().body("CANNOT BE REMOVED");
 	}
 	
 

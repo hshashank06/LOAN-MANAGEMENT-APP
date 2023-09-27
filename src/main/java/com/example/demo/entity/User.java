@@ -95,6 +95,24 @@ public class User implements UserDetails {
 }
 	
 	
+	
+	
+	public User(
+			@NotNull(message = "First Name cannot be null") @NotEmpty(message = "First Name cannot be empty") String firstName,
+			@NotNull(message = "Last Name cannot be null") @NotEmpty(message = "Last Name cannot be Empty") String lastName,
+			Long userId,
+			@Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$") @NotEmpty(message = "Email cannot be empty") String email,
+			@Min(value = 18, message = "User Age cannot be Less than 18 for Loan Account") Integer userAge,
+			LocalDate userdob, @NotEmpty(message = "Password cannot be empty") String userPassword) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userId = userId;
+		this.email = email;
+		this.userAge = userAge;
+		this.userdob = userdob;
+		this.userPassword = userPassword;
+	}
 	public Set<Loan> getLoan() {
 		return loan;
 	}

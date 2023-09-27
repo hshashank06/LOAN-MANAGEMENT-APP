@@ -44,6 +44,17 @@ public class Loan {
 	
 	
 
+	
+	public Loan(Long loanId, LoanType loanType, Integer loanDuration, IssueStatus status, User user) {
+		super();
+		this.loanId = loanId;
+		this.loanType = loanType;
+		this.loanDuration = loanDuration;
+		this.status = status;
+		this.user = user;
+	}
+
+
 	public Loan() {
 		super();
 	}

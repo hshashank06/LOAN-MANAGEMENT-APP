@@ -68,7 +68,7 @@ public class CustomerService implements UserDetailsService {
 		System.out.println("Add");
 		userRepo.save(user);
 		
-			return true;
+		return true;
 
 	
 	}
