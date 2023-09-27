@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +42,9 @@ public class CustomerService implements UserDetailsService {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
+	
+	Logger logger = Logger.getLogger(CustomerService.class.getName());
+	
 	public CustomerService(UserRepo userRepo,AdminRepo adminRepo,ItemRepo itemRepo,LoanRepo loanRepo) {
 		this.userRepo = userRepo;
 		this.adminRepo = adminRepo;
@@ -64,12 +67,16 @@ public class CustomerService implements UserDetailsService {
 		else return false;
 	}
 	public Boolean checkAddNewUser(User user) {
+		try {
 		user.setUserPassword(passwordEncoder.encode(user.getPassword()));
-		System.out.println("Add");
 		userRepo.save(user);
 		
 		return true;
-
+		}
+		catch(Exception e) {
+			logger.info("Could not Register the User");
+			return false;
+		}
 	
 	}
 	

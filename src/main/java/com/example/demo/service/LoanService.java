@@ -33,16 +33,18 @@ public class LoanService {
 	
 
 	public Boolean registerForLoan(Loan loan,Long userId) {
+		try {
 		loan.setStatus(IssueStatus.NO);
 		User user=userRepo.findById(userId).orElse(null);
       loan.setUser(user);
 	loanRepo.save(loan);
-		if(userRepo.existsByUserId(user.getUserId())) {
-			return true;
-
-	}else {
+	return true;
+		}
+		catch(Exception e) {
+			logger.info("Could not register for a new loan");
 			return false;
 		}
+		
 	
 		
 	}

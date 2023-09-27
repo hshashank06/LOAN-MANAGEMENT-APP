@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,8 @@ public class ItemService {
 	ItemRepo itemRepo;
 	@Autowired
 	LoanRepo loanRepo;
+	
+	Logger logger = Logger.getLogger(ItemService.class.getName());
 	
 	
 	public ItemService(UserRepo userRepo,AdminRepo adminRepo,ItemRepo itemRepo,LoanRepo loanRepo) {
@@ -68,8 +71,14 @@ public class ItemService {
 	}
 	
 	public Boolean deleteItems(Long id) {
+		try {
 		itemRepo.deleteById(id);
 		return true;
+		}
+		catch(Exception e) {
+			logger.info("Item Could Not be Deleted");
+			return false;
+		}
 	}
 	
 
