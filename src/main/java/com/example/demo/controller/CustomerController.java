@@ -98,7 +98,7 @@ PasswordEncoder passwordEncoder;
 	ResponseEntity<String> registerNewUserIntoBackEnd(@RequestBody @Valid User user){
 		
 		Boolean result = customerService.checkAddNewUser(user);
-		System.out.println(result);
+		
 		
 		if(result) {
 			return ResponseEntity.status(HttpStatus.OK).body("NEW USER REGISTERED");
@@ -106,6 +106,25 @@ PasswordEncoder passwordEncoder;
 		else {
 			
 			return ResponseEntity.badRequest().body("NEW USER COULLD NOT BE ADDED");
+			}
+		
+	}
+	
+	@PostMapping("/register/admin")
+	@ResponseBody
+	@CrossOrigin(origins = "http://localhost:3000")
+	ResponseEntity<String> registerNewAdminIntoBackEnd(@RequestBody @Valid Admin admin){
+		
+		System.out.println("Here");
+		Boolean result = customerService.checkAddNewAdmin(admin);
+		System.out.println(result);
+		
+		if(result) {
+			return ResponseEntity.status(HttpStatus.OK).body("NEW ADMIN REGISTERED");
+		}
+		else {
+			
+			return ResponseEntity.badRequest().body("NEW ADMIN COULLD NOT BE ADDED");
 			}
 		
 	}
@@ -146,8 +165,7 @@ PasswordEncoder passwordEncoder;
         return "Welcome to Admin Profile";
     }
 	
-  
-
+	
 	  
 
 	@PostMapping("/login")
@@ -162,26 +180,32 @@ PasswordEncoder passwordEncoder;
 	        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
 	        System.out.println(userDetails);
 	        String token = this.helper.generateToken(userDetails);
+	        System.out.println("here");
 
 	        JwtResponse response = JwtResponse.builder()
 	                .jwtToken(token)
 	                .username(userDetails.getUsername()).build();
 	        return new ResponseEntity<>(response, HttpStatus.OK);
 	 }
+	
     private void doAuthenticate(String email, String password) {
 
        
     	UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
         System.out.println(authenticationToken);
+        
     	try {
-        	
+        	System.out.println("Here");
             manager.authenticate(authenticationToken);
             
 
         } catch (BadCredentialsException e) {
+        	
         	System.out.println(e);
+        	
             throw new BadCredentialsException(" Invalid Username or Password  !!");
         }
+    	
 
     }
 

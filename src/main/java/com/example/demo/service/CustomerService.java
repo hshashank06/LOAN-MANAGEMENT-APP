@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
+import com.example.demo.entity.Admin;
 import com.example.demo.entity.User;
 import com.example.demo.repository.AdminRepo;
 import com.example.demo.repository.ItemRepo;
@@ -66,6 +66,22 @@ public class CustomerService implements UserDetailsService {
 		if(adminExists) return true;
 		else return false;
 	}
+	
+	
+	public Boolean checkAddNewAdmin(Admin admin) {
+		try {
+			admin.setAdminPassword(passwordEncoder.encode(admin.getPassword()));
+			adminRepo.save(admin);
+			
+			return true;
+		}
+		
+		catch(Exception e) {
+			logger.info("Could not Register A new Admin");
+			return false;
+		}
+	}
+	
 	public Boolean checkAddNewUser(User user) {
 		try {
 		user.setUserPassword(passwordEncoder.encode(user.getPassword()));
@@ -134,9 +150,17 @@ public class CustomerService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		User user=userRepo.findByEmail(username).orElseThrow(() -> new RuntimeException("User not Found!!"));
+		if(username.contains("loanapplication")) {
+			Admin admin = adminRepo.findByEmail(username).orElseThrow(() -> new RuntimeException("Admin cannot be found"));
+			System.out.println(admin);
+			return admin;
+		}
+		else {
+				
+			User user=userRepo.findByEmail(username).orElseThrow(() -> new RuntimeException("User not Found!!"));
 		
-		return user;
+			return user;
+	}
 	}
 	
 
