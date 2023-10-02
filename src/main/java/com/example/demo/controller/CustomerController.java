@@ -37,6 +37,7 @@ public class CustomerController {
 	CustomerService customerService;
 	
 	
+	
 	Logger logger = Logger.getLogger(CustomerController.class.getName());
 	
 	
@@ -51,8 +52,14 @@ public class CustomerController {
 	ResponseEntity<String> validateUsers(@RequestBody User user) {
 		
 		Boolean response = customerService.validateUserService(user.getUserId(), user.getUserPassword());
-		if(response) return ResponseEntity.ok("TRUE");
-		else return ResponseEntity.badRequest().body("FALSE");
+		if(response) {
+			logger.info("SUCCESSFULLY VALIDATED THE USER");
+			return ResponseEntity.ok("TRUE");
+		}
+		else {
+			logger.info("COULD NOT VALIDATE THE USER");
+			return ResponseEntity.badRequest().body("FALSE");
+		}
 	
 	}
 	
@@ -92,10 +99,9 @@ public class CustomerController {
 	@ResponseBody
 	@PostMapping("/users/delete")
 	@CrossOrigin(origins = "http://localhost:3000")
-	ResponseEntity<Boolean> deleteUserById(@RequestBody User user){
+	public ResponseEntity<Boolean> deleteUserById(@RequestBody User user){
 		Boolean result = customerService.deleteUserById(user.getUserId());
-		if(result == true)
-		return ResponseEntity.status(HttpStatus.OK).body(true);
+		if(result) return ResponseEntity.status(HttpStatus.OK).body(true);
 		else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 	}
 	
@@ -104,7 +110,6 @@ public class CustomerController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	ResponseEntity<String> updateTheFields(@PathVariable Long id,@RequestBody Map<String, Object> updates){
 		
-		System.out.println("Hi");
 			customerService.updateFields(id, updates);
 			return ResponseEntity.ok("The Fields have been updated");
 		

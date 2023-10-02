@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Item;
 import com.example.demo.entity.Loan;
@@ -67,12 +68,13 @@ public class ItemService {
 		return listOfItems;
 	}
 	
+	@Transactional
 	public Boolean deleteItems(Long id) {
 		itemRepo.deleteById(id);
 		return true;
 	}
 	
-
+	@Transactional
 	public void editItem(Long itemId,Map<String,Object> fields) {
 		
 		Item item = itemRepo.findById(itemId).orElse(null);
@@ -111,11 +113,8 @@ public class ItemService {
 
 		Loan loanItem = loanRepo.findById(loanId).orElse(null);
 		if(loanItem.getStatus().equals(IssueStatus.YES)) {
-		item.setLoan(loanItem);
-	
-		
-			itemRepo.save(item);
-			
+			item.setLoan(loanItem);	
+			itemRepo.save(item);		
 			return true;
 		}
 		else {
@@ -125,6 +124,7 @@ public class ItemService {
 		
 	}
 	
+	@Transactional
 	public List<Item> displayItemsForGivenLoanIds(Long loanId) {
 		try {			
 		List<Item> items = itemRepo.findByLoanId(loanId);

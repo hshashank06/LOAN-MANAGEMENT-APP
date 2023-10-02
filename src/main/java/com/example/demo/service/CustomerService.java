@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +32,8 @@ public class CustomerService {
 	@Autowired
 	LoanRepo loanRepo;
 	
+	Logger logger = Logger.getLogger(CustomerService.class.getName());
+	
 	
 	public CustomerService(UserRepo userRepo,AdminRepo adminRepo,ItemRepo itemRepo,LoanRepo loanRepo) {
 		this.userRepo = userRepo;
@@ -55,13 +57,27 @@ public class CustomerService {
 		else return false;
 	}
 	public Boolean checkAddNewUser(User user) {
-		userRepo.save(user);
-		if(userRepo.existsByUserId(user.getUserId())) {
-			return true;
-
-	}else {
+		
+		Boolean checkIfUserPresent = userRepo.findAll().stream().anyMatch(eachUser -> eachUser.getLastName().equals(user.getLastName()) && eachUser.getUserEmail().equals(user.getUserEmail()));
+		logger.info(checkIfUserPresent);
+		try {
+			if(!checkIfUserPresent) 
+			{
+				
+				userRepo.save(user);		
+				return true;
+			}
+			
+		else {
+			logger.info("The User ALready Exists");
 			return false;
+	}
 		}
+			catch(Exception e) {
+				logger.info("Could not Register the User");
+				return false;
+			}
+		
 	}
 	
 	public List<User> getAllUsers(){
@@ -69,6 +85,7 @@ public class CustomerService {
 		return users;
 	}
 	
+	@Transactional
 	public Boolean deleteUserById(Long id) {
 		userRepo.deleteById(id);
 		if(!userRepo.existsById(id)) {

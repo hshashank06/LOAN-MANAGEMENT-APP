@@ -60,7 +60,7 @@ public class User {
 	private String userPassword;
 		
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE,orphanRemoval = true)
 	private Set<Loan> loan;
 	
 //	@OneToOne(mappedBy = "user")
@@ -91,7 +91,40 @@ public class User {
 	
 }
 	
+
+	public User(
+			@NotNull(message = "First Name cannot be null") @NotEmpty(message = "First Name cannot be empty") String firstName,
+			@NotNull(message = "Last Name cannot be null") @NotEmpty(message = "Last Name cannot be Empty") String lastName,
+			Long userId,
+			@Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$") @NotEmpty(message = "Email cannot be empty") String userEmail,
+			@Min(value = 18, message = "User Age cannot be Less than 18 for Loan Account") Integer userAge,
+			LocalDate userdob,
+			@NotEmpty(message = "Password cannot be empty") @Size(min = 8, max = 20) String userPassword) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userId = userId;
+		this.userEmail = userEmail;
+		this.userAge = userAge;
+		this.userdob = userdob;
+		this.userPassword = userPassword;
+	}
 	
+	public User(
+			@NotNull(message = "First Name cannot be null") @NotEmpty(message = "First Name cannot be empty") String firstName,
+			@NotNull(message = "Last Name cannot be null") @NotEmpty(message = "Last Name cannot be Empty") String lastName,
+			@Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$") @NotEmpty(message = "Email cannot be empty") String userEmail,
+			@Min(value = 18, message = "User Age cannot be Less than 18 for Loan Account") Integer userAge,
+			LocalDate userdob,
+			@NotEmpty(message = "Password cannot be empty") @Size(min = 8, max = 20) String userPassword) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userEmail = userEmail;
+		this.userAge = userAge;
+		this.userdob = userdob;
+		this.userPassword = userPassword;
+	}
 	public Set<Loan> getLoan() {
 		return loan;
 	}

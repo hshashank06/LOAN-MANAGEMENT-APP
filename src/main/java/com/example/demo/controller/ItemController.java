@@ -43,7 +43,7 @@ public class ItemController {
 	@ResponseBody
 	@PostMapping("/register/item/{id}")
 	@CrossOrigin(origins = "http://localhost:3000")
-	ResponseEntity<String> itemRegister(@PathVariable("id") Long loanId, @RequestBody @Valid Item item) {
+	public ResponseEntity<String> itemRegister(@PathVariable("id") Long loanId, @RequestBody @Valid Item item) {
 		System.out.println(item);
 		Boolean response = itemService.registerItem(loanId, item);
 		if (response)
@@ -80,7 +80,7 @@ public class ItemController {
 	@ResponseBody
 	@DeleteMapping("/delete/item")
 	@CrossOrigin(origins = "http://localhost:3000")
-	ResponseEntity<String> deleteItem(@RequestBody Item item) {
+	public ResponseEntity<String> deleteItem(@RequestBody Item item) {
 
 		Boolean result = itemService.deleteItems(item.getItemId());
 		if (result)

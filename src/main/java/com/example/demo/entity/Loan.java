@@ -38,7 +38,7 @@ public class Loan {
 	@JsonIgnore
 	private User user;
 	
-	@OneToMany(mappedBy = "loan",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "loan",cascade = CascadeType.REMOVE,orphanRemoval = true)
 	@JsonIgnore
 	private Set<Item> item;
 	
@@ -49,6 +49,20 @@ public class Loan {
 	}
 	
 	
+	
+	
+	public Loan(Long loanId, LoanType loanType, Integer loanDuration, IssueStatus status, User user) {
+		super();
+		this.loanId = loanId;
+		this.loanType = loanType;
+		this.loanDuration = loanDuration;
+		this.status = status;
+		this.user = user;
+	}
+
+
+
+
 	public User getUser() {
 		return user;
 	}
