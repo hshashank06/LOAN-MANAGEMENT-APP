@@ -61,6 +61,10 @@ const LoanApplyForm = (loanId) =>{
         
     }
 
+    const handleGoBack = () => {
+        navigate(-1);
+    }
+
 
     const updateLoan= async(loan)=>{
         
@@ -166,13 +170,13 @@ const LoanApplyForm = (loanId) =>{
             </Form.Group>
             <Form.Group>
                 {/* <Col xs={3}> */}
-                <Form.Label>Loan Duration</Form.Label>
+                <Form.Label>Loan Duration (in yrs)</Form.Label>
                 <Form.Control type="text" placeholder="Add a Loan Duration" value={loanduration} onChange = {(event) => {setLoanDuration(event.target.value)}} />
                 {/* </Col> */}
             </Form.Group>
             
             <Button className="mt-2 ml-2 mr-2" type="submit" onClick={onButtonClick}>{loanId.loanId?'Update':'Apply'}</Button>
-            <Link  to='/user-dashboard'><Button className="mt-2 ml-2 mr-2" variant="secondary" >Go Back</Button></Link>
+            <Button className="mt-2 ml-2 mr-2" variant="secondary" onClick = {handleGoBack} >Go Back</Button>
 
         </Form>
         </div>

@@ -262,7 +262,7 @@ const ItemForm = ({onRegister,itemId}) =>{
             
             <Form.Group>
                 <Form.Label>Loan Id</Form.Label>
-                <Form.Control as="select" placeholder="Enter an approved Loan Id" value={loanId} onChange={(e)=>setLoanId(e.target.value)}>
+                <Form.Control as="select" placeholder="Enter an approved Loan Id" disabled={itemId?true:false} value={loanId} onChange={(e)=>setLoanId(e.target.value)}>
                 <option value = "">Choose an approved loan</option>
                 {
                 loanIdOptions  && loanIdOptions.map((opt)=>(
