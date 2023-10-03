@@ -16,7 +16,8 @@ const LoanApplyForm = (loanId) =>{
     const [show, setShow] = useState(false);
     const [popupHeading,setHeading]=useState('')
     const [popupBody,setBody]=useState('')
-    
+    const [errorValues,setErrorValues]=useState({})
+    const [submit,setSubmit]=useState(false)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -101,12 +102,36 @@ const LoanApplyForm = (loanId) =>{
 
     const onButtonClick = (e) => {
         e.preventDefault()
-        if(loanId.loanId)
-        updateLoan({loanType,'loanDuration':parseInt(loanduration),status})
-        else
-        registerLoan();
-        setLoanType('');
-        setLoanDuration('');
+        setErrorValues(checkValues({
+            loanType,loanduration
+        }))
+        setSubmit(true)
+    }
+    useEffect(()=>{
+        if(Object.keys(errorValues).length===0 && submit){  
+            if(loanId.loanId)
+                updateLoan({loanType,'loanDuration':parseInt(loanduration),status})
+                else
+                registerLoan();
+                setLoanType('');
+                setLoanDuration('');
+        }
+    },[errorValues])
+
+    const checkValues=(val)=>{
+        const regex=/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+        const errors={}
+        if(!val.loanType){
+            errors.loanType='Loan Type is required!'
+        }
+        if(!val.loanduration){
+            errors.loanduration='Loan Duration is required!'
+        }
+        else if(val.loanduration<1 || val.loanDuration>100){
+            errors.loanduration='Loan Duration must between 1 to 100 years!'
+        }
+        
+        return errors
     }
     useEffect(()=>{
         const displayData=async()=>{
@@ -167,12 +192,14 @@ const LoanApplyForm = (loanId) =>{
                 
                 {/* </Col> */}
                 </Form.Control>
+                <p className='form-error'>{errorValues.loanType}</p>
             </Form.Group>
             <Form.Group>
                 {/* <Col xs={3}> */}
                 <Form.Label>Loan Duration (in yrs)</Form.Label>
                 <Form.Control type="text" placeholder="Add a Loan Duration" value={loanduration} onChange = {(event) => {setLoanDuration(event.target.value)}} />
                 {/* </Col> */}
+                <p className='form-error'>{errorValues.loanduration}</p>
             </Form.Group>
             
             <Button className="mt-2 ml-2 mr-2" type="submit" onClick={onButtonClick}>{loanId.loanId?'Update':'Apply'}</Button>

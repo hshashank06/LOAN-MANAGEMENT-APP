@@ -16,7 +16,8 @@ function Login(){
     const [show, setShow] = useState(false);
     const [popupHeading,setHeading]=useState('')
     const [popupBody,setBody]=useState('')
-    
+    const [errorValues,setErrorValues]=useState({})
+    const [submit,setSubmit]=useState(false)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -24,7 +25,6 @@ function Login(){
     const navigate=useNavigate()
 
     const loginUser= async (e)=>{
-        e.preventDefault()
         const user = 
         {userId:userId,
         userPassword:userPassword};
@@ -87,6 +87,34 @@ function Login(){
         }
     }
 
+
+
+    useEffect(()=>{
+        if(Object.keys(errorValues).length===0 && submit){  
+            loginUser()
+        }
+    },[errorValues])
+
+    const checkValues=(val)=>{
+        const regex=/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+        const errors={}
+        if(!val.userId){
+            errors.userId='User ID is required!'
+        }
+        if(!val.userPassword){
+            errors.userPassword='Password is required!'
+        }
+        return errors
+    }
+
+    const onSubmit=(e)=>{
+        e.preventDefault()
+        setErrorValues(checkValues({
+            userId,userPassword
+        }))
+        setSubmit(true)
+    }
+
    
     return(
         <div className="bg-page">
@@ -106,10 +134,13 @@ function Login(){
                 width:"30vw"
             }}>
                <Form.Group> <Form.Label >User ID </Form.Label><Form.Control type ="text" value = {userId} placeholder="Enter User Id"  onChange={(e)=>setUserId(e.target.value)}/>
+               <p className='log-form-error'>{errorValues.userId}</p>
                </Form.Group>
-               <Form.Group><Form.Label htmlFor="password">Password</Form.Label><Form.Control type ="password" value = {userPassword} placeholder="Enter Password"  onChange={(e)=>setUserPassword(e.target.value)}/></Form.Group>
+               <Form.Group><Form.Label htmlFor="password">Password</Form.Label><Form.Control type ="password" value = {userPassword} placeholder="Enter Password"  onChange={(e)=>setUserPassword(e.target.value)}/>
+               <p className='log-form-error'>{errorValues.userPassword}</p>
+               </Form.Group>
                <Form.Group><Form.Label >Are you an Admin</Form.Label><input type ="checkbox" checked ={isAdmin}   onChange={()=>setAdmin(!isAdmin)}/></Form.Group>  
-                <Button type ="submit" onClick = {loginUser}>Submit</Button>
+                <Button type ="submit" onClick = {onSubmit}>Submit</Button>
 
             </Form>
             

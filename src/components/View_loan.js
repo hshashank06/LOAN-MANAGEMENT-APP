@@ -10,18 +10,24 @@ const Viewloan=()=>{
     // console.log(userId);
     const userId=localStorage.getItem('userId')
     const getDataFromBackend = async () => {
-        const url = `http://localhost:8082/loanapp/display/loan/userId/${userId}`
-        let options = {
-            method : 'GET',
-            mode : 'cors',
-            headers:{
-                'Content-Type':'application/json'
-            },
+        try{
+            const url = `http://localhost:8082/loanapp/display/loan/userId/${userId}`
+            let options = {
+                method : 'GET',
+                mode : 'cors',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+            }
+            const response = await fetch(url,options)
+            const data = await response.json();
+            console.log(data)
+            setResponse(data)
         }
-        const response = await fetch(url,options)
-        const data = await response.json();
-        console.log(data)
-        setResponse(data)
+        catch(e){
+            console.log(e)
+        }
+        
 
     }
 
@@ -69,7 +75,7 @@ const Viewloan=()=>{
                             <td>{loan.loanId}</td>
                             <td>{loan.loanType}</td>
                             <td>{loan.loanDuration}</td>
-                            <td className={loan.status==="YES"?'pass':'fail'}>{loan.status}</td>
+                            <td className={loan.status==="YES"?'pass':loan.status==="NO"?'fail':'pending'}>{loan.status}</td>
                             
                         </tr>
                     ))

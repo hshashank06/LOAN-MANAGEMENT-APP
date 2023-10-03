@@ -3,9 +3,9 @@
   /* background-color: black; */
   /* background-image: url("https://wallpaperaccess.com/full/1104823.jpg");
   background-size: cover; */
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
-  margin-bottom: 50px;;
+  margin-bottom: px;;
 /* color: aliceblue; */
 }
 
@@ -55,6 +55,10 @@ color: aliceblue;
 }
 .form-error{
   color:red;
+}
+.log-form-error{
+  color: red;
+  font-weight: bold;
 }
 .go-back{
   position: relative;
@@ -130,6 +134,9 @@ color: aliceblue;
 
 .fail{
   color:red !important;
+}
+.pending{
+  color:yellowgreen !important;
 }
 
 

@@ -126,7 +126,7 @@ const LoanManagement=()=>{
                             <td>{item.itemType}</td>
                             <td>{item.itemMake}</td>
                             <td>{item.itemValue}</td>
-                            <td>{item.issueStatus}</td>
+                            <td  className={item.issueStatus==="YES"?'pass':'fail'}>{item.issueStatus}</td>
                             {/* <td>{loan.user}</td>
                             <td>{loan.item.length}</td> */}
                             {/* <td id={loan.loanId}><Button id="YES" variant="link" disabled={loan.status==="YES"?true:false} onClick={onApprove}>{loan.status==="YES"?'Approved':'Approve'}</Button></td>

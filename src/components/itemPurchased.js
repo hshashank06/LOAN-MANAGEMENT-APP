@@ -12,17 +12,23 @@ const ItemPurchased = () => {
     const userId=localStorage.getItem('userId')
 
     const setItemsPurchased = async () => {
-        const url = `http://localhost:8082/loanapp/display/user/${userId}/items`
-        const options = {
-            method: 'GET',
-            mode: 'cors',
+        try{
+            const url = `http://localhost:8082/loanapp/display/user/${userId}/items`
+            const options = {
+                method: 'GET',
+                mode: 'cors',
 
+            }
+
+            const resp = await fetch(url,options)
+            const data = await resp.json();
+            console.log(data)
+            setResponse(data);
         }
-
-        const resp = await fetch(url,options)
-        const data = await resp.json();
-        console.log(data)
-        setResponse(data);
+        catch(e){
+            console.log(e)
+        }
+        
     }
 
     const onGoBackButtonClick = () => {
@@ -56,10 +62,10 @@ const ItemPurchased = () => {
                             <td>{response.indexOf(item)+1}</td>
                             <td>{item.itemId}</td>
                             <td>{item.description}</td>
-                            <td>{item.issueStatus}</td>
+                            <td className={item.issueStatus==="YES"?'pass':'fail'}>{item.issueStatus}</td>
                             <td>{item.itemMake}</td>
                             <td>{item.itemType}</td>
-                            <td>{item.itemValue}</td>
+                            <td >{item.itemValue}</td>
                        </tr>
                     ))
                 }

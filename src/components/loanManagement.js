@@ -108,6 +108,7 @@ const LoanManagement=()=>{
                 <th>Loan Type</th>
                 <th>Duration (years)</th>
                 <th>User</th>
+                <th>Status</th>
                 {/* <th>Items</th> */}
                 </tr>
             </thead>
@@ -120,6 +121,7 @@ const LoanManagement=()=>{
                             <td>{loanData.loan.loanType}</td>
                             <td>{loanData.loan.loanDuration}</td>
                             <td>{loanData.user.firstName+' '+loanData.user.lastName}</td>
+                            <td className={loanData.loan.status==="YES"?'pass':loanData.loan.status==="NO"?'fail':'pending'}>{loanData.loan.status}</td>
                             {/* <td>{loan.item.length}</td> */}
                             <td id={loanData.loan.loanId}><Button id="YES" variant="link" disabled={loanData.loan.status==="YES"?true:false} onClick={onApprove}>{loanData.loan.status==="YES"?'Approved':'Approve'}</Button></td>
                             <td id={loanData.loan.loanId}><Button id="NO" variant="link" disabled={loanData.loan.status==="NO"?true:false} onClick={onApprove}>{loanData.loan.status==="NO"?'Rejected':'Reject'}</Button></td>
