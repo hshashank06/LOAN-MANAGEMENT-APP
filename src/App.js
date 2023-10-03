@@ -19,6 +19,9 @@ import ItemPurchased from './components/itemPurchased';
 import EditItem from './components/editItem';
 import EditLoan from './components/editLoan';
 import Footer from './components/Footer';
+import Privacypolicy from './components/Privacypolicy';
+import Frequentquestions from './components/Frequentquestions';
+import Copyright from './components/Copyright';
 
 function App() {
 
@@ -54,6 +57,9 @@ function App() {
         < Route path='/apply-loan' element={<LoanApplyForm/>}/>
         <Route path='/item-management' element={<ItemMangaement/>}/>
         <Route path = "/items-purchased" element={<ItemPurchased/>}/>
+        <Route path="/privacypolicies" element={<Privacypolicy/>}/>
+        <Route path='/frequent-questions' element={<Frequentquestions/>}/>
+        <Route path='/copyright' element={<Copyright/>}/>
       </Routes> 
       
     </div>
