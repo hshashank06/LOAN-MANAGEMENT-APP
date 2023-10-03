@@ -76,6 +76,19 @@ public class ItemController {
 		return ResponseEntity.ok(item);
 
 	}
+	
+	@ResponseBody
+	@PostMapping("/get/item/{itemId}/loan")
+	@CrossOrigin(origins = "http://localhost:3000")
+	public ResponseEntity<Long> getLoanIdForGivenItem(@PathVariable("itemId") Long itemId){
+		Long loanId = itemService.returnLoanId(itemId);
+		if(loanId != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(loanId);
+		}
+		else {
+			return ResponseEntity.badRequest().body(null);
+		}
+	}
 
 	@ResponseBody
 	@DeleteMapping("/delete/item")

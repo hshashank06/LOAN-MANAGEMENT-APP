@@ -85,6 +85,12 @@ public class CustomerService {
 		return users;
 	}
 	
+	public String getUsernameForGivenId(Long userId) {
+		User user = userRepo.findById(userId).orElse(null);
+		return user.getFirstName() + user.getLastName();
+		
+	}
+	
 	@Transactional
 	public Boolean deleteUserById(Long id) {
 		userRepo.deleteById(id);

@@ -45,6 +45,14 @@ public class CustomerController {
 		this.customerService = customerService;
 	}
 	
+	@PostMapping("/user/{userId}/username")
+	@ResponseBody
+	@CrossOrigin(origins = "http://localhost:3000")
+	ResponseEntity<String> getUsernameForUserId(@PathVariable("userId") Long userId){
+		String userName = customerService.getUsernameForGivenId(userId);
+		return ResponseEntity.ok(userName);
+	}
+	
 	
 	@PostMapping("/validate/user")
 	@ResponseBody

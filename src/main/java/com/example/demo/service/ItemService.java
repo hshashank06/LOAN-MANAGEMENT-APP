@@ -108,6 +108,18 @@ public class ItemService {
 		
 		
 	}
+	
+	 public Long returnLoanId(Long itemId) {
+		 Item item =itemRepo.findById(itemId).orElse(null);
+		 if(item != null) {
+			 return item.getLoan().getLoanId();
+		 }
+		 else {
+			 return null;
+		 }
+		 
+		 
+	 }
 	public Boolean registerItem(Long loanId,Item item) {
 		
 

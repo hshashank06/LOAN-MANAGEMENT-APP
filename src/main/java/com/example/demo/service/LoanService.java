@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Loan;
 import com.example.demo.entity.User;
+import com.example.demo.repository.ItemRepo;
 import com.example.demo.repository.LoanRepo;
 import com.example.demo.repository.UserRepo;
 
@@ -84,6 +85,7 @@ public class LoanService {
 		 return loanReturn;
 	 }
 	 
+	
 	 public Boolean issueOrRejectLoan(Long loanId,IssueStatus status) {
 		 Loan loan = loanRepo.findById(loanId).orElse(null);
 		 loan.setStatus(status);
