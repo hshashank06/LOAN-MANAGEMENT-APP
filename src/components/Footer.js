@@ -13,7 +13,7 @@ const Footer = () => <footer className="footer-section"style={{}}>
             <div className="col-md-3 mb-md-0 mb-3">
                 <h5 className=" foot-text">Privacy and Security</h5>
                 <ul className="list-unstyled foot-text">
-                    <li><a href="#!" className="foot-text">Privacy Policy</a></li>
+                    <li><a href="/privaypolicies" className="foot-text">Privacy Policy</a></li>
                     <li><a href="#!" className="foot-text">Copyright</a></li>
                     {/* <li><a href="#!">Link 3</a></li>
                     <li><a href="#!">Link 4</a></li> */}
@@ -23,9 +23,9 @@ const Footer = () => <footer className="footer-section"style={{}}>
             <div className="col-md-3 mb-md-0 mb-3">
                 <h5 className=" foot-text">About</h5>
                 <ul className="list-unstyled foot-text">
-                    <li><a href="#!" className="foot-text">Frequently Asked Questions</a></li>
-                    <li><a href="#!" className="foot-text">Feedback</a></li>
-                    <li><a href="#!" className="foot-text">Location</a></li>
+                    <li><a href="/frequent-questions" className="foot-text">Frequently Asked Questions</a></li>
+                    <li><a href="#!" className="foot-text">Contact</a></li>
+                    {/* <li><a href="#!" className="foot-text">Location</a></li> */}
                     {/* <li><a href="#!"></a></li> */}
                 </ul>
             </div>
@@ -33,7 +33,7 @@ const Footer = () => <footer className="footer-section"style={{}}>
     </div>
 
     <div className="footer-copyright text-center  foot-text">© 2023 Copyright:
-        <a href="/" className="foot-text"> website</a>
+        <a href="/" className="foot-text"> LaxmiFunds</a>
     </div>
 
 </footer>
