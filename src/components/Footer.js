@@ -2,19 +2,19 @@ import React from "react"
 
 const Footer = () => <footer className="footer-section"style={{}}>
     <div className=" text-md-left">
-        <div className="row">
-            <div className="col-md-5 mt-md-0 mt-3 footer-left foot-text">
+        <div className="row" style={{marginLeft:100}}>
+            <div className="col-md-4 mb-md-0 mb-3">
                 <h5 className="foot-text  " >Laxmi Chit Funds </h5>
                 <p className="foot-text  " > Since 1987 </p>
             </div>
 
-            <hr className="clearfix w-100 d-md-none pb-0"/>
+            {/* <hr className="clearfix w-100 d-md-none pb-0"/> */}
 
-            <div className="col-md-3 mb-md-0 mb-3">
+            <div className="col-md-4 mb-md-0 mb-3">
                 <h5 className=" foot-text">Privacy and Security</h5>
                 <ul className="list-unstyled foot-text">
-                    <li><a href="/privaypolicies" className="foot-text">Privacy Policy</a></li>
-                    <li><a href="#!" className="foot-text">Copyright</a></li>
+                    <li><a href="/privacypolicies" className="foot-text">Privacy Policy</a></li>
+                    <li><a href="/copyright" className="foot-text">Copyright</a></li>
                     {/* <li><a href="#!">Link 3</a></li>
                     <li><a href="#!">Link 4</a></li> */}
                 </ul>
