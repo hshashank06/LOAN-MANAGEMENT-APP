@@ -163,9 +163,25 @@ const ItemForm = ({onRegister,itemId}) =>{
             }
             
         }
+
+        const getLoanId=async()=>{
+            try{
+                const url=`http://localhost:8082/loanapp/get/item/${itemId}/loan`
+                let options={
+                    method:'POST'
+                }
+                const res=await fetch(url,options)
+                const data=await res.json()
+                setLoanId(data)
+            }
+            catch(e){
+                console.log(e)
+            }
+        }
         if(itemId){
             console.log("lol")
             displayData()
+            getLoanId()
             // console.log(userValues)
         }
     },[]) 
