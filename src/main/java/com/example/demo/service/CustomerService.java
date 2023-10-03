@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -128,7 +129,10 @@ public class CustomerService {
 						user.setUserEmail((String) value);
 					}
 					else if(fieldName.equals("userdob")) {
-						user.setUserdob((LocalDate) value);
+						DateTimeFormatter datTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						LocalDate date = LocalDate.parse((String) value, datTimeFormatter);
+						user.setUserdob(date);
+						
 					}
 					
 				}

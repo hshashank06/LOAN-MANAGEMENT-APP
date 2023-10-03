@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.jboss.logging.Logger;
@@ -16,6 +17,7 @@ import com.example.demo.repository.UserRepo;
 
 import utils.IssueStatus;
 import utils.LoanReturnValue;
+import utils.LoanType;
 
 @Service
 public class LoanService {
@@ -49,15 +51,21 @@ public class LoanService {
 	
 		
 	}
-    public Boolean updateLoan(Long loanId, Loan updatedLoan) {
-    	Optional<Loan> existingLoanOptional=loanRepo.findById(loanId);
-    	if(existingLoanOptional.isPresent()) {
-    		Loan existingLoan=existingLoanOptional.get();
-    		existingLoan.setItem(updatedLoan.getItem());
-    		existingLoan.setLoanDuration(updatedLoan.getLoanDuration());
-    		existingLoan.setLoanType(updatedLoan.getLoanType());
-    		existingLoan.setStatus(updatedLoan.getStatus());
-    		loanRepo.save(existingLoan);
+    public Boolean updateLoan(Long loanId, Map<String,Object> fields) {
+    	Loan loan = loanRepo.findById(loanId).orElse(null);
+    	if(loan != null) {
+    		for(Map.Entry<String, Object> eachItem : fields.entrySet()) {
+    			String field = eachItem.getKey();
+				Object value = eachItem.getValue();
+				if(field.equals("loanType")) {
+					LoanType loanType = LoanType.valueOf((String) value);
+					loan.setLoanType(loanType);
+				}
+				else if(field.equals("loanDuration")) {
+					loan.setLoanDuration((Integer) value);
+				}
+    		}
+    		loanRepo.save(loan);   		
     		return true;
     	}
     	else

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,9 +72,9 @@ public class LoanController {
 	@ResponseBody
 	@PutMapping("/loan/{loanId}/update")
 	@CrossOrigin(origins = "http://localhost:3000")
-	ResponseEntity<Boolean> updateLoan(@PathVariable Long loanId ,@RequestBody  @Valid Loan updatedLoan){
+	ResponseEntity<Boolean> updateLoan(@PathVariable Long loanId ,@RequestBody Map<String, Object> fieldMap){
 	  
-		Boolean result = loanService.updateLoan(loanId, updatedLoan);
+		Boolean result = loanService.updateLoan(loanId, fieldMap);
 		return ResponseEntity.ok(result);
 		
 	}
